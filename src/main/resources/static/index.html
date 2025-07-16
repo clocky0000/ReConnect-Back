@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>감정일기 & 보고서</title>
+</head>
+<body>
+
+<h2>📔 감정일기 작성</h2>
+<label>User ID: <input id="diaryUserId" /></label><br/>
+<label>Date (YYYY-MM-DD): <input id="diaryDate" /></label><br/>
+<label>Title: <input id="diaryTitle" /></label><br/>
+<label>Content:<br/><textarea id="diaryContent" rows="4" cols="50"></textarea></label><br/>
+<button onclick="submitDiary()">일기 저장</button>
+
+<hr/>
+
+<h2>📋 분석 보고서 확인</h2>
+<label>User ID: <input id="searchUserId" /></label><br/>
+<label>Date (YYYY-MM-DD): <input id="searchDate" /></label><br/>
+<button onclick="getReport()">불러오기</button>
+
+<pre id="reportResult" style="white-space: pre-wrap; background-color: #f0f0f0; padding: 10px;"></pre>
+
+<script src="script.js"></script>
+</body>
+</html>
