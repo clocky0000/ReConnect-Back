@@ -1,0 +1,19 @@
+## api 확인용 JSON 데이터
+
+## 회원가입
+{
+    "userId": "test123",
+    "password": "pw123",
+    "passwordConfirm": "pw123",
+    "name": "봉길",
+    "birthDate": "2000-02-02",
+    "job": "학생",
+    "isSubscribed": false
+}
+
+## 로그인
+{
+    "userId": "test123",
+    "password": "pw123"
+}
+
