@@ -6,9 +6,15 @@
 </head>
 <body>
 
+<h2>🔐 로그인</h2>
+<label>User ID: <input id="loginUserId" /></label><br/>
+<label>Password: <input type="password" id="loginPassword" /></label><br/>
+<button onclick="login()">로그인</button>
+
+<div id="loginStatus" style="margin-top:10px; font-weight: bold;"></div>
+<hr/>
+
 <h2>📔 감정일기 작성</h2>
-<label>User ID: <input id="diaryUserId" /></label><br/>
-<label>Date (YYYY-MM-DD): <input id="diaryDate" /></label><br/>
 <label>Title: <input id="diaryTitle" /></label><br/>
 <label>Content:<br/><textarea id="diaryContent" rows="4" cols="50"></textarea></label><br/>
 <button onclick="submitDiary()">일기 저장</button>

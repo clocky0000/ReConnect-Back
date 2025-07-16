@@ -17,11 +17,11 @@ public class DiaryService {
         this.diaryRepository = diaryRepository;
     }
 
-    public void submitDiary(DiaryRequestDto dto) {
+    public void submitDiary(DiaryRequestDto dto, String userId) {
         Diary diary = new Diary();
-        diary.setUserId(dto.getUserId());
+        diary.setUserId(userId);
         diary.setTitle(dto.getTitle());
-        diary.setDate(dto.getDate());
+        diary.setDate(LocalDate.now());
         diary.setContent(dto.getContent());
         diary.setSubmitted(true);
         diaryRepository.save(diary);

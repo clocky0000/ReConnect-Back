@@ -2,6 +2,7 @@ package com.example.ReConnect.controller;
 
 import com.example.ReConnect.dto.DiaryRequestDto;
 import com.example.ReConnect.service.DiaryService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,9 @@ public class DiaryController {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<?> submitDiary(@RequestBody DiaryRequestDto dto) {
-        diaryService.submitDiary(dto);
+    public ResponseEntity<?> submitDiary(@RequestBody DiaryRequestDto dto, HttpSession session) {
+        String userId = (String) session.getAttribute("loginId");
+        diaryService.submitDiary(dto, userId);
         return ResponseEntity.ok("제출 완료");
     }
 
