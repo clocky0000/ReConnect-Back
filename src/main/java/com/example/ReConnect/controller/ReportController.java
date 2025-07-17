@@ -4,6 +4,7 @@ import com.example.ReConnect.dto.ReportRequestDto;
 import com.example.ReConnect.entity.Report;
 import com.example.ReConnect.service.ReportService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,12 @@ public class ReportController {
 
 
     @PostMapping("/save")               /*이건 그냥 보고서 저장인디 JSON 형태 저장하는거 테스트한거임*/
-    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto dto) throws JsonProcessingException {
-        reportService.saveReport(dto);
+    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto dto, HttpSession session) throws JsonProcessingException {
+        String userId = (String) session.getAttribute("loginId");
+        if (userId == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+        reportService.saveReport(dto, userId);
         return ResponseEntity.ok("분석 저장 완료");
     }
 }
