@@ -21,11 +21,13 @@
 
 <hr/>
 
-<h2>📋 분석 보고서 확인</h2>
-<label>User ID: <input id="searchUserId" /></label><br/>
-<label>Date (YYYY-MM-DD): <input id="searchDate" /></label><br/>
-<button onclick="getReport()">불러오기</button>
+<h2>📅 일기 및 분석 보고서 확인</h2>
+<label>날짜 선택: <input type="date" id="calendar" /></label><br/>
 
+<h3>📓 작성된 일기</h3>
+<pre id="diaryResult" style="white-space: pre-wrap; background-color: #f9f9f9; padding: 10px;"></pre>
+
+<h3>📑 분석 보고서</h3>
 <pre id="reportResult" style="white-space: pre-wrap; background-color: #f0f0f0; padding: 10px;"></pre>
 
 <script src="script.js"></script>

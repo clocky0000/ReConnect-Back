@@ -63,27 +63,53 @@ async function submitDiary() {
   }
 }
 
-// 📋 분석 보고서 조회 함수
-async function getReport() {
-  const userId = document.getElementById('searchUserId').value;
-  const date = document.getElementById('searchDate').value;
-
-  if (!userId || !date) {
-    alert('조회할 사용자 ID와 날짜를 입력하세요.');
-    return;
-  }
-
-  try {
-    const res = await fetch(`/api/report/get?userId=${userId}&date=${date}`);
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(errorText || '보고서 조회 실패');
+// 📆 달력 선택 시 조회
+document.addEventListener('DOMContentLoaded', () => {
+  const calendar = document.getElementById('calendar');
+  calendar.addEventListener('change', () => {
+    if (!loggedInUserId) {
+      alert('로그인 후 이용해주세요.');
+      return;
     }
 
-    const json = await res.json();
-    document.getElementById('reportResult').innerText = JSON.stringify(json, null, 2);
+    const selectedDate = calendar.value;
+    if (selectedDate) {
+      loadDiaryAndReport(selectedDate);
+    }
+  });
+});
+
+// 📄 일기 + 보고서 조회
+async function loadDiaryAndReport(date) {
+  document.getElementById('diaryResult').innerText = '불러오는 중...';
+  document.getElementById('reportResult').innerText = '불러오는 중...';
+
+  try {
+    // 1. 일기 불러오기
+    const diaryRes = await fetch(`/api/diary/${loggedInUserId}/${date}`, {
+      credentials: 'include'
+    });
+
+    if (diaryRes.ok) {
+      const diary = await diaryRes.json();
+      document.getElementById('diaryResult').innerText =
+          `제목: ${diary.title}\n\n내용:\n${diary.content}`;
+    } else {
+      document.getElementById('diaryResult').innerText = '❌ 일기를 찾을 수 없습니다.';
+    }
+
+    // 2. 보고서 불러오기
+    const reportRes = await fetch(`/api/report/get?userId=${loggedInUserId}&date=${date}`);
+    if (reportRes.ok) {
+      const report = await reportRes.json();
+      document.getElementById('reportResult').innerText = JSON.stringify(report, null, 2);
+    } else {
+      document.getElementById('reportResult').innerText = '❌ 보고서를 찾을 수 없습니다.';
+    }
+
   } catch (error) {
-    console.error('보고서 조회 오류:', error);
-    document.getElementById('reportResult').innerText = '❌ 보고서 조회 실패';
+    console.error('불러오기 오류:', error);
+    document.getElementById('diaryResult').innerText = '서버 오류';
+    document.getElementById('reportResult').innerText = '서버 오류';
   }
 }
