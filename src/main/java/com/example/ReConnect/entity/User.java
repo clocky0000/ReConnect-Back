@@ -2,19 +2,15 @@ package com.example.ReConnect.entity;
 
 import com.example.ReConnect.dto.UserDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
-@Table(name = "users")      // database에 해당 이름의 테이블 생성
+@Table(name = "users")
 public class User {
 
     @Id
     @Column(name = "user_id", columnDefinition = "TEXT")
-    private String userId;      // Primary Key
+    private String userId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
@@ -31,6 +27,56 @@ public class User {
     @Column(name = "is_subscribed", nullable = false)
     private boolean isSubscribed = false;
 
+    public User() {}
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
+    }
+
     public static User toUser(UserDto dto) {
         User user = new User();
         user.setUserId(dto.getUserId());
@@ -38,8 +84,7 @@ public class User {
         user.setName(dto.getName());
         user.setBirthDate(dto.getBirthDate());
         user.setJob(dto.getJob());
-
+        user.setSubscribed(dto.getIsSubscribed() != null && dto.getIsSubscribed());
         return user;
     }
-
 }
