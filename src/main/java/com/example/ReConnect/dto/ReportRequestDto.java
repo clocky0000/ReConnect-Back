@@ -1,20 +1,38 @@
 package com.example.ReConnect.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ReportRequestDto {
     private String userId;
     private String date;
-    private JsonNode analysisJson;
     private String inputText;
-    private CorePrompt corePrompt;
 
+    @JsonProperty("attachment_theory")
+    private JsonNode attachmentTheory;
+
+    @JsonProperty("defense_mechanism")
+    private JsonNode defenseMechanism;
+
+    @JsonProperty("thinking_mechanism")
+    private JsonNode thinkingMechanism;
+
+    @JsonProperty("strength_theory")
+    private JsonNode strengthTheory;
+
+    @JsonProperty("self_determination")
+    private JsonNode selfDetermination;
+
+    @JsonProperty("secure_base")
+    private JsonNode secureBase;
+
+    // Getter and Setter
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -22,11 +40,6 @@ public class ReportRequestDto {
     public String getDate() {
         return date;
     }
-
-    public JsonNode getAnalysisJson() {
-        return analysisJson;
-    }
-
     public void setDate(String date) {
         this.date = date;
     }
@@ -34,49 +47,27 @@ public class ReportRequestDto {
     public String getInputText() {
         return inputText;
     }
-
     public void setInputText(String inputText) {
         this.inputText = inputText;
     }
 
-    public CorePrompt getCorePrompt() {
-        return corePrompt;
-    }
+    public JsonNode getAttachmentTheory() { return attachmentTheory; }
+    public void setAttachmentTheory(JsonNode attachmentTheory) { this.attachmentTheory = attachmentTheory; }
 
-    public void setCorePrompt(CorePrompt corePrompt) {
-        this.corePrompt = corePrompt;
-    }
+    public JsonNode getDefenseMechanism() { return defenseMechanism; }
+    public void setDefenseMechanism(JsonNode defenseMechanism) { this.defenseMechanism = defenseMechanism; }
 
+    public JsonNode getThinkingMechanism() { return thinkingMechanism; }
+    public void setThinkingMechanism(JsonNode thinkingMechanism) { this.thinkingMechanism = thinkingMechanism; }
 
-    public static class CorePrompt {
-        private String judgmentBasis;
-        private List<String> alternativeExplanations;
-        private String contextConsideration;
+    public JsonNode getStrengthTheory() { return strengthTheory; }
+    public void setStrengthTheory(JsonNode strengthTheory) { this.strengthTheory = strengthTheory; }
 
-        public String getJudgmentBasis() {
-            return judgmentBasis;
-        }
+    public JsonNode getSelfDetermination() { return selfDetermination; }
+    public void setSelfDetermination(JsonNode selfDetermination) { this.selfDetermination = selfDetermination; }
 
-        public void setJudgmentBasis(String judgmentBasis) {
-            this.judgmentBasis = judgmentBasis;
-        }
-
-        public List<String> getAlternativeExplanations() {
-            return alternativeExplanations;
-        }
-
-        public void setAlternativeExplanations(List<String> alternativeExplanations) {
-            this.alternativeExplanations = alternativeExplanations;
-        }
-
-        public String getContextConsideration() {
-            return contextConsideration;
-        }
-
-        public void setContextConsideration(String contextConsideration) {
-            this.contextConsideration = contextConsideration;
-        }
-    }
+    public JsonNode getSecureBase() { return secureBase; }
+    public void setSecureBase(JsonNode secureBase) { this.secureBase = secureBase; }
 
 }
 
