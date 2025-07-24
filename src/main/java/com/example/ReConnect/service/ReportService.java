@@ -23,6 +23,15 @@ public class ReportService {
         Report report = reportRepository.findByUserIdAndDate(userId, date)
                 .orElseThrow(() -> new RuntimeException("보고서 없음"));
         return new ReportResponseDto(
+                report.getReportTitle(),
+                report.getKeyEmotions(),
+                report.getCoreKeywords(),
+                report.getIndicatorTrends(),
+                report.getCurrentAnalysis(),
+                report.getSolution(),
+                report.getFeedbackAndCheer(),
+                report.getRepetitivePattern(),
+                report.getRecommendation(),
                 report.getAttachmentTheory(),
                 report.getDefenseMechanism(),
                 report.getThinkingPattern(),
@@ -31,8 +40,6 @@ public class ReportService {
                 report.getSecureBase()
         );
     }
-
-
 
     public void saveReport(ReportRequestDto dto, String userId) throws JsonProcessingException {
         Report report = new Report();
@@ -44,6 +51,15 @@ public class ReportService {
         report.setDate(parsedDate);
 
         report.setInputText(dto.getInputText());
+        report.setReportTitle(dto.getReportTitle());
+        report.setKeyEmotions(dto.getKeyEmotions());
+        report.setCoreKeywords(dto.getCoreKeywords());
+        report.setIndicatorTrends(dto.getIndicatorTrends());
+        report.setCurrentAnalysis(dto.getCurrentAnalysis());
+        report.setSolution(dto.getSolution());
+        report.setFeedbackAndCheer(dto.getFeedbackAndCheer());
+        report.setRepetitivePattern(dto.getRepetitivePattern());
+        report.setRecommendation(dto.getRecommendation());
         report.setAttachmentTheory(dto.getAttachmentTheory());
         report.setDefenseMechanism(dto.getDefenseMechanism());
         report.setThinkingPattern(dto.getThinkingMechanism());
