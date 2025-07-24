@@ -13,12 +13,6 @@ public class ReportResponseDto {
     private String feedbackAndCheer;
     private String repetitivePattern;
     private String recommendation;
-    private JsonNode attachmentTheory;
-    private JsonNode defenseMechanism;
-    private JsonNode thinkingPattern;
-    private JsonNode strengthTheory;
-    private JsonNode selfDetermination;
-    private JsonNode secureBase;
 
     public ReportResponseDto(String reportTitle,
                              JsonNode keyEmotions,
@@ -28,13 +22,7 @@ public class ReportResponseDto {
                              JsonNode solution,
                              String feedbackAndCheer,
                              String repetitivePattern,
-                             String recommendation,
-                             JsonNode attachmentTheory,
-                             JsonNode defenseMechanism,
-                             JsonNode thinkingPattern,
-                             JsonNode strengthTheory,
-                             JsonNode selfDetermination,
-                             JsonNode secureBase) {
+                             String recommendation) {
         this.reportTitle = reportTitle;
         this.keyEmotions = keyEmotions;
         this.coreKeywords = coreKeywords;
@@ -44,12 +32,6 @@ public class ReportResponseDto {
         this.feedbackAndCheer = feedbackAndCheer;
         this.repetitivePattern = repetitivePattern;
         this.recommendation = recommendation;
-        this.attachmentTheory = attachmentTheory;
-        this.defenseMechanism = defenseMechanism;
-        this.thinkingPattern = thinkingPattern;
-        this.strengthTheory = strengthTheory;
-        this.selfDetermination = selfDetermination;
-        this.secureBase = secureBase;
     }
 
     // Getters
@@ -62,10 +44,4 @@ public class ReportResponseDto {
     public String getFeedbackAndCheer() { return feedbackAndCheer; }
     public String getRepetitivePattern() { return repetitivePattern; }
     public String getRecommendation() { return recommendation; }
-    public JsonNode getAttachmentTheory() { return attachmentTheory; }
-    public JsonNode getDefenseMechanism() { return defenseMechanism; }
-    public JsonNode getThinkingPattern() { return thinkingPattern; }
-    public JsonNode getStrengthTheory() { return strengthTheory; }
-    public JsonNode getSelfDetermination() { return selfDetermination; }
-    public JsonNode getSecureBase() { return secureBase; }
 }
