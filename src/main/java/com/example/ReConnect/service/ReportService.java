@@ -19,41 +19,18 @@ public class ReportService {
         this.reportRepository = reportRepository;
     }
 
-//    public ReportResponseDto getReport(String userId, LocalDate date) {
-//        System.out.println("== userId = " + userId + " date = " + date);
-//        Report report = reportRepository.findByUserIdAndDate(userId, date)
-//                .orElseThrow(() -> new RuntimeException("보고서 없음"));
-//        return new ReportResponseDto(
-//                report.getAttachmentTheory(),
-//                report.getDefenseMechanism(),
-//                report.getThinkingPattern(),
-//                report.getStrengthTheory(),
-//                report.getSelfDetermination(),
-//                report.getSecureBase()
-//        );
-//    }
-public ReportResponseDto getReport(String userId, LocalDate date) {
-    System.out.println("ReportService.getReport 호출 - userId: " + userId + ", date: " + date);
-
-    var optionalReport = reportRepository.findByUserIdAndDate(userId, date);
-
-    if (optionalReport.isEmpty()) {
-        System.out.println("조회된 보고서 없음 - DB 데이터 전체 목록:");
-        reportRepository.findAll().forEach(r ->
-                System.out.println("userId=" + r.getUserId() + ", date=" + r.getDate())
+    public ReportResponseDto getReport(String userId, LocalDate date) {
+        Report report = reportRepository.findByUserIdAndDate(userId, date)
+                .orElseThrow(() -> new RuntimeException("보고서 없음"));
+        return new ReportResponseDto(
+                report.getAttachmentTheory(),
+                report.getDefenseMechanism(),
+                report.getThinkingPattern(),
+                report.getStrengthTheory(),
+                report.getSelfDetermination(),
+                report.getSecureBase()
         );
-        throw new RuntimeException("보고서 없음");
     }
-    Report report = optionalReport.get();
-    return new ReportResponseDto(
-            report.getAttachmentTheory(),
-            report.getDefenseMechanism(),
-            report.getThinkingPattern(),
-            report.getStrengthTheory(),
-            report.getSelfDetermination(),
-            report.getSecureBase()
-    );
-}
 
 
     public void saveReport(ReportRequestDto dto, String userId) throws JsonProcessingException {
