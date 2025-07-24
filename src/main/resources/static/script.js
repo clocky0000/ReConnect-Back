@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadDiaryAndReport(date) {
   document.getElementById('diaryResult').innerText = '불러오는 중...';
   document.getElementById('reportResult').innerText = '불러오는 중...';
+  document.getElementById('reportTextResult').innerText = '불러오는 중...';
 
   try {
     // 1. 일기 불러오기
@@ -98,18 +99,51 @@ async function loadDiaryAndReport(date) {
       document.getElementById('diaryResult').innerText = '❌ 일기를 찾을 수 없습니다.';
     }
 
-    // 2. 보고서 불러오기
+    // 2. 보고서 (수치 요약용)
     const reportRes = await fetch(`/api/report/get?userId=${loggedInUserId}&date=${date}`);
     if (reportRes.ok) {
       const report = await reportRes.json();
-      document.getElementById('reportResult').innerText = JSON.stringify(report, null, 2);
+      document.getElementById('reportResult').innerText =
+          `📌 ${report.reportTitle || '리포트'}\n\n\n` +
+          `✨ 요약 키워드: ${report.coreKeywords?.join(', ') || '없음'}\n\n` +
+          `😊 주요 감정: ${report.keyEmotions?.join(', ') || '없음'}\n\n` +
+          `💡 솔루션\n` +
+          `- 과거 솔루션: ${report.solution.past_solution || '없음'}\n` +
+          `- 현재 솔루션: ${report.solution.current_solution || '없음'}\n\n` +
+          `🧩 현재 분석\n` +
+          `- 문제점: ${report.currentAnalysis.problem || '없음'}\n` +
+          `- 생각 패턴: ${report.currentAnalysis.thought || '없음'}\n` +
+          `- 자원: ${report.currentAnalysis.resource || '없음'}\n\n` +
+          `💬 응원 메시지: ${report.feedbackAndCheer || '없음'}\n\n` +
+          `🔁 반복 패턴: ${report.repetitivePattern || '없음'}\n\n` +
+          `🌱 추천: ${report.recommendation || '없음'}\n\n`;
+
     } else {
       document.getElementById('reportResult').innerText = '❌ 보고서를 찾을 수 없습니다.';
+    }
+
+    // 3. 줄글 분석 + 감정 지표
+    const textRes = await fetch(`/api/report/text/${loggedInUserId}/${date}`, {
+      credentials: 'include'
+    });
+    if (textRes.ok) {
+      const textReport = await textRes.json();
+      document.getElementById('reportTextResult').innerText =
+          `📘 줄글 요약:\n${textReport.reportText || '없음'}\n\n` +
+          `📊 감정 지표:\n` +
+          `- 스트레스: ${textReport.stress ?? 'N/A'}\n` +
+          `- 에너지: ${textReport.energy ?? 'N/A'}\n` +
+          `- 감정: ${textReport.emotion ?? 'N/A'}\n` +
+          `- 우울감: ${textReport.depression ?? 'N/A'}\n` +
+          `- 불안감: ${textReport.anxiety ?? 'N/A'}`;
+    } else {
+      document.getElementById('reportTextResult').innerText = '❌ 줄글 분석을 찾을 수 없습니다.';
     }
 
   } catch (error) {
     console.error('불러오기 오류:', error);
     document.getElementById('diaryResult').innerText = '서버 오류';
     document.getElementById('reportResult').innerText = '서버 오류';
+    document.getElementById('reportTextResult').innerText = '서버 오류';
   }
 }

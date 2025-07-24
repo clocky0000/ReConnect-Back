@@ -59,42 +59,6 @@ public class Report {
     @Column(columnDefinition = "TEXT")
     private String recommendation;
 
-    // 애착이론
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    @JsonProperty("attachment_theory")
-    private JsonNode attachmentTheory;
-
-    // 방어기제
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    @JsonProperty("defense_mechanism")
-    private JsonNode defenseMechanism;
-
-    // 사고 패턴
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    @JsonProperty("thinking_pattern")
-    private JsonNode thinkingPattern;
-
-    // 강점 이론
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    @JsonProperty("strength_theory")
-    private JsonNode strengthTheory;
-
-    // 자기결정이론
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    @JsonProperty("self_determination")
-    private JsonNode selfDetermination;
-
-    // 안전기지
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    @JsonProperty("secure_base")
-    private JsonNode secureBase;
-
     public Report() {}
 
     // Getters
@@ -115,12 +79,6 @@ public class Report {
     public String getFeedbackAndCheer() { return feedbackAndCheer; }
     public String getRepetitivePattern() { return repetitivePattern; }
     public String getRecommendation() { return recommendation; }
-    public JsonNode getAttachmentTheory() { return attachmentTheory; }
-    public JsonNode getDefenseMechanism() { return defenseMechanism; }
-    public JsonNode getThinkingPattern() { return thinkingPattern; }
-    public JsonNode getStrengthTheory() { return strengthTheory; }
-    public JsonNode getSelfDetermination() { return selfDetermination; }
-    public JsonNode getSecureBase() { return secureBase; }
 
     // Setters
     public void setVectorId(Long vectorId) { this.vectorId = vectorId; }
@@ -136,11 +94,5 @@ public class Report {
     public void setFeedbackAndCheer(String feedbackAndCheer) { this.feedbackAndCheer = feedbackAndCheer; }
     public void setRepetitivePattern(String repetitivePattern) { this.repetitivePattern = repetitivePattern; }
     public void setRecommendation(String recommendation) { this.recommendation = recommendation; }
-    public void setAttachmentTheory(JsonNode attachmentTheory) { this.attachmentTheory = attachmentTheory; }
-    public void setDefenseMechanism(JsonNode defenseMechanism) { this.defenseMechanism = defenseMechanism; }
-    public void setThinkingPattern(JsonNode thinkingPattern) { this.thinkingPattern = thinkingPattern; }
-    public void setStrengthTheory(JsonNode strengthTheory) { this.strengthTheory = strengthTheory; }
-    public void setSelfDetermination(JsonNode selfDetermination) { this.selfDetermination = selfDetermination; }
-    public void setSecureBase(JsonNode secureBase) { this.secureBase = secureBase; }
 }
 

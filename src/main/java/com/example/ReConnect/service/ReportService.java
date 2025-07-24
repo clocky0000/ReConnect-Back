@@ -31,13 +31,7 @@ public class ReportService {
                 report.getSolution(),
                 report.getFeedbackAndCheer(),
                 report.getRepetitivePattern(),
-                report.getRecommendation(),
-                report.getAttachmentTheory(),
-                report.getDefenseMechanism(),
-                report.getThinkingPattern(),
-                report.getStrengthTheory(),
-                report.getSelfDetermination(),
-                report.getSecureBase()
+                report.getRecommendation()
         );
     }
 
@@ -60,12 +54,6 @@ public class ReportService {
         report.setFeedbackAndCheer(dto.getFeedbackAndCheer());
         report.setRepetitivePattern(dto.getRepetitivePattern());
         report.setRecommendation(dto.getRecommendation());
-        report.setAttachmentTheory(dto.getAttachmentTheory());
-        report.setDefenseMechanism(dto.getDefenseMechanism());
-        report.setThinkingPattern(dto.getThinkingMechanism());
-        report.setStrengthTheory(dto.getStrengthTheory());
-        report.setSelfDetermination(dto.getSelfDetermination());
-        report.setSecureBase(dto.getSecureBase());
 
         reportRepository.save(report);
     }
