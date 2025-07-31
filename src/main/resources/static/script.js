@@ -1,5 +1,59 @@
 let loggedInUserId = null;  // 로그인한 사용자 ID를 저장
 
+// 회원가입
+async function signup() {
+  const userId = document.getElementById('signupUserId').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+  const name = document.getElementById('signupName').value.trim();
+  const birthDate = document.getElementById('signupBirthDate').value;
+  const job = document.getElementById('signupJob').value.trim();
+  const isSubscribed = document.getElementById('signupIsSubscribed').checked;
+
+  if (!userId || !password || !passwordConfirm || !name || !birthDate || !job) {
+    document.getElementById('signupStatus').innerText = '❗ 모든 필드를 입력해주세요.';
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    document.getElementById('signupStatus').innerText = '❌ 비밀번호가 일치하지 않습니다.';
+    return;
+  }
+
+  const body = {
+    userId,
+    password,
+    passwordConfirm,
+    name,
+    birthDate,       // "yyyy-MM-dd" 형식
+    job,
+    isSubscribed
+  };
+
+  try {
+    const response = await fetch('/api/user/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    if (response.ok) {
+      document.getElementById('signupStatus').innerText = '✅ 회원가입 성공! 로그인 해주세요.';
+      // 입력값 초기화
+      ['signupUserId', 'signupPassword', 'signupPasswordConfirm', 'signupName', 'signupBirthDate', 'signupJob'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('signupIsSubscribed').checked = false;
+    } else {
+      const errorMsg = await response.text();
+      document.getElementById('signupStatus').innerText = '❌ 회원가입 실패: ' + errorMsg;
+    }
+  } catch (error) {
+    console.error('회원가입 오류:', error);
+    document.getElementById('signupStatus').innerText = '서버 오류로 회원가입에 실패했습니다.';
+  }
+}
+
 // 🔐 로그인 함수
 async function login() {
   const userId = document.getElementById('loginUserId').value;

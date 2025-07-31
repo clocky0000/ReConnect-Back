@@ -6,6 +6,21 @@
 </head>
 <body>
 
+<h2>📝 회원가입</h2>
+<label>User ID: <input id="signupUserId" /></label><br/>
+<label>Password: <input type="password" id="signupPassword" /></label><br/>
+<label>Password Confirm: <input type="password" id="signupPasswordConfirm" /></label><br/>
+<label>Name: <input id="signupName" /></label><br/>
+<label>Birth Date: <input type="date" id="signupBirthDate" /></label><br/>
+<label>Job: <input id="signupJob" /></label><br/>
+<label>
+    <input type="checkbox" id="signupIsSubscribed" />
+    구독 여부 (선택)
+</label><br/>
+<button onclick="signup()">회원가입</button>
+
+<div id="signupStatus" style="margin-top:10px; font-weight: bold;"></div>
+
 <h2>🔐 로그인</h2>
 <label>User ID: <input id="loginUserId" /></label><br/>
 <label>Password: <input type="password" id="loginPassword" /></label><br/>
