@@ -12,16 +12,23 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
 
-
     public DiaryService(DiaryRepository diaryRepository) {
         this.diaryRepository = diaryRepository;
     }
 
     public void submitDiary(DiaryRequestDto dto, String userId) {
+        LocalDate today = LocalDate.now();
+        LocalDate diaryDate = dto.getDate();
+        
+        // 날짜 검증: 최대 3일 전까지 일기 작성 가능
+        if(diaryDate.isBefore(today.minusDays(3)) || diaryDate.isAfter(today)) {
+            throw new IllegalArgumentException("일기는 최대 3일 전까지만 작성 가능");
+        }
+
         Diary diary = new Diary();
         diary.setUserId(userId);
         diary.setTitle(dto.getTitle());
-        diary.setDate(LocalDate.now());
+        diary.setDate(dto.getDate());
         diary.setContent(dto.getContent());
         diary.setSubmitted(true);
         diaryRepository.save(diary);
