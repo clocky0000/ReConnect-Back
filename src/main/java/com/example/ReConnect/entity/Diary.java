@@ -20,8 +20,6 @@ public class Diary {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private boolean submitted = false;
-
     public Diary() {}
 
     public Long getId() {
@@ -44,10 +42,6 @@ public class Diary {
         return content;
     }
 
-    public boolean isSubmitted() {
-        return submitted;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -66,9 +60,5 @@ public class Diary {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setSubmitted(boolean submitted) {
-        this.submitted = submitted;
     }
 }

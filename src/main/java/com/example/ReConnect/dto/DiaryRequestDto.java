@@ -18,6 +18,7 @@ public class DiaryRequestDto {
         this.content = content;
     }
 
+
     public String getUserId() {
         return userId;
     }
