@@ -30,7 +30,6 @@ public class DiaryService {
         diary.setTitle(dto.getTitle());
         diary.setDate(dto.getDate());
         diary.setContent(dto.getContent());
-        diary.setSubmitted(true);
         diaryRepository.save(diary);
     }
 
