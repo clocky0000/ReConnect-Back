@@ -201,3 +201,84 @@ async function loadDiaryAndReport(date) {
     document.getElementById('reportTextResult').innerText = '서버 오류';
   }
 }
+
+// reasons 조회
+async function loadReportReasons() {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+  const date = document.getElementById('reportDate').value;
+  if (!date) {
+    alert('날짜를 선택해주세요.');
+    return;
+  }
+  try {
+    const res = await fetch(`/api/report/reasons/${loggedInUserId}/${date}`, {
+      credentials: 'include',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('reasonsResult').innerText = JSON.stringify(data, null, 2);
+    } else {
+      document.getElementById('reasonsResult').innerText = '❌ 데이터가 없습니다.';
+    }
+  } catch (error) {
+    console.error(error);
+    document.getElementById('reasonsResult').innerText = '서버 오류 발생';
+  }
+}
+
+// metadata 조회
+async function loadReportMetadata() {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+  const date = document.getElementById('reportDate').value;
+  if (!date) {
+    alert('날짜를 선택해주세요.');
+    return;
+  }
+  try {
+    const res = await fetch(`/api/report/metadata/${loggedInUserId}/${date}`, {
+      credentials: 'include',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('metadataResult').innerText = JSON.stringify(data, null, 2);
+    } else {
+      document.getElementById('metadataResult').innerText = '❌ 데이터가 없습니다.';
+    }
+  } catch (error) {
+    console.error(error);
+    document.getElementById('metadataResult').innerText = '서버 오류 발생';
+  }
+}
+
+// scores 조회
+async function loadReportScores() {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+  const date = document.getElementById('reportDate').value;
+  if (!date) {
+    alert('날짜를 선택해주세요.');
+    return;
+  }
+  try {
+    const res = await fetch(`/api/report/scores/${loggedInUserId}/${date}`, {
+      credentials: 'include',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('scoresResult').innerText = JSON.stringify(data, null, 2);
+    } else {
+      document.getElementById('scoresResult').innerText = '❌ 데이터가 없습니다.';
+    }
+  } catch (error) {
+    console.error(error);
+    document.getElementById('scoresResult').innerText = '서버 오류 발생';
+  }
+}

@@ -19,11 +19,9 @@ import java.time.LocalDate;
 public class ReportController {
 
     private final ReportService reportService;
-    private final ReportTextService reportTextService;
 
-    public ReportController(ReportService reportService, ReportTextService reportTextService) {
+    public ReportController(ReportService reportService){
         this.reportService = reportService;
-        this.reportTextService = reportTextService;
     }
 
     @GetMapping("/{userId}/{date}")     /*이게 postman으로 api 테스트 할때 사용하는 용도 - db에 있는 보고서 가져오기*/
@@ -40,13 +38,6 @@ public class ReportController {
         return ResponseEntity.ok(reportDto);
     }
 
-    @GetMapping("/text/{userId}/{date}")
-    public ResponseEntity<ReportTextDto> getReportText(@PathVariable String userId,
-                                                           @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        ReportTextDto reportTextDto = reportTextService.getReportText(userId, date);
-        return ResponseEntity.ok(reportTextDto);
-    }
-
     @PostMapping("/save")               /*이건 그냥 보고서 저장인디 JSON 형태 저장하는거 테스트한거임*/
     public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto dto, HttpSession session) throws JsonProcessingException {
         String userId = (String) session.getAttribute("loginId");
@@ -55,15 +46,5 @@ public class ReportController {
         }
         reportService.saveReport(dto, userId);
         return ResponseEntity.ok("분석 저장 완료");
-    }
-
-    @PostMapping("/text/save")
-    public ResponseEntity<?> saveReportText(@RequestBody ReportTextDto dto, HttpSession session) throws JsonProcessingException {
-        String userId = (String) session.getAttribute("loginId");
-        if (userId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
-        reportTextService.saveReportText(dto, userId);
-        return ResponseEntity.ok("줄글 텍스트 저장 완료");
     }
 }

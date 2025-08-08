@@ -15,6 +15,11 @@ public class ReportText {
     private String userId;
     private LocalDate date;
 
+    // 연결된 일기
+    @OneToOne
+    @JoinColumn(name = "diary_id", referencedColumnName = "id", nullable = false, unique = true)
+    private Diary diary;
+
     // 분석 줄글
     @Column(columnDefinition = "TEXT")
     private String reportText;
@@ -37,6 +42,9 @@ public class ReportText {
 
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
+
+    public Diary getDiary() { return diary; }
+    public void setDiary(Diary diary) { this.diary = diary; }
 
     public String getReportText() { return reportText; }
     public void setReportText(String reportText) { this.reportText = reportText; }

@@ -1,7 +1,9 @@
 package com.example.ReConnect.service;
 
 import com.example.ReConnect.dto.ReportTextDto;
+import com.example.ReConnect.entity.Diary;
 import com.example.ReConnect.entity.ReportText;
+import com.example.ReConnect.repository.DiaryRepository;
 import com.example.ReConnect.repository.ReportTextRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.time.LocalDate;
 public class ReportTextService {
 
     private final ReportTextRepository reportTextRepository;
+    private final DiaryRepository diaryRepository;
 
-    public ReportTextService(ReportTextRepository reportTextRepository) {
+    public ReportTextService(ReportTextRepository reportTextRepository, DiaryRepository diaryRepository) {
         this.reportTextRepository = reportTextRepository;
+        this.diaryRepository = diaryRepository;
     }
 
     public ReportTextDto getReportText(String userId, LocalDate date) {
@@ -35,9 +39,12 @@ public class ReportTextService {
         ReportText reportText = new ReportText();
 
         reportText.setUserId(userId);
+        LocalDate date = reportTextDto.getDate();
+        reportText.setDate(date);
 
-        LocalDate parsedDate = reportTextDto.getDate();
-        reportText.setDate(parsedDate);
+        Diary diary = diaryRepository.findByUserIdAndDate(userId, date)
+                        .orElseThrow(() -> new RuntimeException("해당 일기가 없습니다."));
+        reportText.setDiary(diary);
 
         reportText.setReportText(reportTextDto.getReportText());
         reportText.setStress(reportTextDto.getStress());

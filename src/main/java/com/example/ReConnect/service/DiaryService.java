@@ -25,6 +25,12 @@ public class DiaryService {
             throw new IllegalArgumentException("일기는 최대 3일 전까지만 작성 가능");
         }
 
+        // 날짜 중복 확인
+        boolean exists = diaryRepository.findByUserIdAndDate(userId, diaryDate).isPresent();
+        if (exists) {
+            throw new IllegalArgumentException("이미 일기를 작성하셨습니다");
+        }
+
         Diary diary = new Diary();
         diary.setUserId(userId);
         diary.setTitle(dto.getTitle());
@@ -38,6 +44,11 @@ public class DiaryService {
                 .orElseThrow(() -> new RuntimeException("해당 일기를 찾을 수 없습니다."));
 
         return new DiaryRequestDto(diary.getUserId(), diary.getDate(), diary.getTitle(), diary.getContent());
+    }
+
+    public Diary getDiaryEntity(String userId, LocalDate date) {
+        return diaryRepository.findByUserIdAndDate(userId, date)
+                .orElseThrow(() -> new RuntimeException("해당 일기를 찾을 수 없습니다."));
     }
 
 }
