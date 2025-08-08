@@ -19,6 +19,11 @@ public class Report {
     private String userId;
     private LocalDate date;
 
+    // 연결된 일기
+    @OneToOne
+    @JoinColumn(name = "diary_id", referencedColumnName = "id", nullable = false, unique = true)
+    private Diary diary;
+
     // 일기 텍스트 밖으로
     @Column(columnDefinition = "TEXT")
     private String inputText;
@@ -69,6 +74,7 @@ public class Report {
         return userId;
     }
     public LocalDate getDate() { return date; }
+    public Diary getDiary() { return diary; }
     public String getInputText() { return inputText; }
     public String getReportTitle() { return reportTitle; }
     public JsonNode getKeyEmotions() { return keyEmotions; }
@@ -84,6 +90,7 @@ public class Report {
     public void setVectorId(Long vectorId) { this.vectorId = vectorId; }
     public void setUserId(String userId) { this.userId = userId; }
     public void setDate(LocalDate date) { this.date = date; }
+    public void setDiary(Diary diary) { this.diary = diary; }
     public void setInputText(String inputText) { this.inputText = inputText; }
     public void setReportTitle(String reportTitle) { this.reportTitle = reportTitle; }
     public void setKeyEmotions(JsonNode keyEmotions) { this.keyEmotions = keyEmotions; }

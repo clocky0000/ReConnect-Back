@@ -2,7 +2,9 @@ package com.example.ReConnect.service;
 
 import com.example.ReConnect.dto.ReportRequestDto;
 import com.example.ReConnect.dto.ReportResponseDto;
+import com.example.ReConnect.entity.Diary;
 import com.example.ReConnect.entity.Report;
+import com.example.ReConnect.repository.DiaryRepository;
 import com.example.ReConnect.repository.ReportRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
@@ -14,13 +16,18 @@ import java.time.format.DateTimeFormatter;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+    private final DiaryRepository diaryRepository;
 
-    public ReportService(ReportRepository reportRepository) {
+    public ReportService(ReportRepository reportRepository, DiaryRepository diaryRepository) {
         this.reportRepository = reportRepository;
+        this.diaryRepository = diaryRepository;
     }
 
     public ReportResponseDto getReport(String userId, LocalDate date) {
-        Report report = reportRepository.findByUserIdAndDate(userId, date)
+        Diary diary = diaryRepository.findByUserIdAndDate(userId, date)
+                .orElseThrow(() -> new RuntimeException("일기 없음"));
+
+        Report report = reportRepository.findByDiary(diary)
                 .orElseThrow(() -> new RuntimeException("보고서 없음"));
         return new ReportResponseDto(
                 report.getReportTitle(),
@@ -36,14 +43,15 @@ public class ReportService {
     }
 
     public void saveReport(ReportRequestDto dto, String userId) throws JsonProcessingException {
-        Report report = new Report();
-
-        report.setUserId(userId);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate parsedDate = LocalDate.parse(dto.getDate(), formatter);
-        report.setDate(parsedDate);
 
+        Diary diary = diaryRepository.findByUserIdAndDate(userId, parsedDate)
+                .orElseThrow(() -> new RuntimeException("일기 없음"));
+
+        Report report = new Report();
+        report.setUserId(userId);
+        report.setDate(parsedDate);
         report.setInputText(dto.getInputText());
         report.setReportTitle(dto.getReportTitle());
         report.setKeyEmotions(dto.getKeyEmotions());
@@ -54,7 +62,7 @@ public class ReportService {
         report.setFeedbackAndCheer(dto.getFeedbackAndCheer());
         report.setRepetitivePattern(dto.getRepetitivePattern());
         report.setRecommendation(dto.getRecommendation());
-
+        report.setDiary(diary);
         reportRepository.save(report);
     }
 }
