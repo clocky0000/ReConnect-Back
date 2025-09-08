@@ -29,6 +29,17 @@
 <div id="loginStatus" style="margin-top:10px; font-weight: bold;"></div>
 <hr/>
 
+<h2>💞 연인 코드 발급</h2>
+<button id="generateCoupleCodeBtn">연인 코드 받기</button>
+<div id="coupleCodeResult" style="margin-top:10px; font-weight:bold;"></div>
+<hr/>
+
+<h2>💞 연인 코드로 연결하기</h2>
+<label>상대방 연인 코드 입력: <input id="inputCoupleCode" /></label>
+<button onclick="connectWithCoupleCode()">연인 연결</button>
+<div id="connectStatus" style="margin-top:10px; font-weight:bold;"></div>
+<hr/>
+
 <h2>📔 감정일기 작성</h2>
 <label>Title: <input id="diaryTitle" /></label><br/>
 <label>Content:<br/><textarea id="diaryContent" rows="4" cols="50"></textarea></label><br/>

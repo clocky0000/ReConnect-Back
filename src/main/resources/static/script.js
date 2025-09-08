@@ -71,6 +71,14 @@ async function login() {
       const data = await response.json();
       loggedInUserId = data.userId;
       document.getElementById('loginStatus').innerText = `✅ ${loggedInUserId}님, 로그인되었습니다.`;
+
+      if (data.coupleCode) {
+        document.getElementById('coupleCodeResult').innerText =
+            `이미 발급된 연인 코드가 있습니다.\n`
+            + `💌 연인 코드: ${data.coupleCode}`;
+      } else {
+        document.getElementById('coupleCodeResult').innerText = '연인 코드가 없습니다.';
+      }
     } else {
       document.getElementById('loginStatus').innerText = '❌ 로그인 실패: 아이디 또는 비밀번호를 확인해주세요.';
     }
@@ -280,5 +288,68 @@ async function loadReportScores() {
   } catch (error) {
     console.error(error);
     document.getElementById('scoresResult').innerText = '서버 오류 발생';
+  }
+}
+
+// 연인 코드 발급
+document.getElementById('generateCoupleCodeBtn').addEventListener('click', async () => {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/user/${loggedInUserId}/coupleCode`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('coupleCodeResult').innerText =
+          `💌 새 연인 코드: ${data.coupleCode}`;
+      alert('✅ 연인 코드가 생성되었습니다.');
+    } else {
+      const error = await response.text();
+      document.getElementById('coupleCodeResult').innerText = '❌ 코드 생성 실패: ' + error;
+    }
+  } catch (error) {
+    console.error('연인 코드 발급 오류:', error);
+    document.getElementById('coupleCodeResult').innerText = '서버 오류로 코드 발급 실패';
+  }
+});
+
+// 연인 코드로 연결
+async function connectWithCoupleCode() {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+
+  const coupleCode = document.getElementById('inputCoupleCode').value.trim();
+  if (!coupleCode) {
+    alert('연인 코드를 입력해주세요.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/user/${loggedInUserId}/connect?coupleCode=${coupleCode}`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('connectStatus').innerText =
+          `💞 ${data.partnerId}님과 연결되었습니다!`;
+      alert('✅ 연인 연결 성공!');
+    } else {
+      const errorMsg = await response.text();
+      document.getElementById('connectStatus').innerText = '❌ 연결 실패: ' + errorMsg;
+    }
+  } catch (error) {
+    console.error('연인 연결 오류:', error);
+    document.getElementById('connectStatus').innerText = '서버 오류로 연결 실패';
   }
 }

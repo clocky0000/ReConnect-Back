@@ -10,6 +10,8 @@ public class UserDto {
     private String name;
     private LocalDate birthDate;    // 생년월일 (yyyy-MM-dd -> LocalDate 변환)
     private String job;
+    private String coupleCode;     // 커플 코드
+    private String partnerId;      // 연인 아이디
     private Boolean isSubscribed;
 
     public UserDto() {}
@@ -17,7 +19,6 @@ public class UserDto {
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -25,7 +26,6 @@ public class UserDto {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -33,7 +33,6 @@ public class UserDto {
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
-
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
@@ -41,7 +40,6 @@ public class UserDto {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -49,7 +47,6 @@ public class UserDto {
     public LocalDate getBirthDate() {
         return birthDate;
     }
-
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
@@ -57,15 +54,19 @@ public class UserDto {
     public String getJob() {
         return job;
     }
-
     public void setJob(String job) {
         this.job = job;
     }
 
+    public String getCoupleCode() { return coupleCode; }
+    public void setCoupleCode(String coupleCode) { this.coupleCode = coupleCode; }
+
+    public String getPartnerId() { return partnerId; }
+    public void setPartnerId(String partnerId) { this.partnerId = partnerId; }
+    
     public Boolean getIsSubscribed() {
         return isSubscribed;
     }
-
     public void setIsSubscribed(Boolean isSubscribed) {
         this.isSubscribed = isSubscribed;
     }
@@ -77,6 +78,8 @@ public class UserDto {
         dto.setName(user.getName());
         dto.setBirthDate(user.getBirthDate());
         dto.setJob(user.getJob());
+        dto.setCoupleCode(user.getCoupleCode());
+        dto.setPartnerId(user.getPartnerId());
         dto.setIsSubscribed(user.isSubscribed());
         return dto;
     }
@@ -90,6 +93,8 @@ public class UserDto {
                 ", name='" + name + '\'' +
                 ", birthDate=" + birthDate +
                 ", job='" + job + '\'' +
+                ", coupleCode='" + coupleCode + '\'' +
+                ", partnerId='" + partnerId + '\'' +
                 ", isSubscribed=" + isSubscribed +
                 '}';
     }
