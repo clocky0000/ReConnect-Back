@@ -24,6 +24,12 @@ public class User {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String job;
 
+    @Column(name="couple_code", columnDefinition = "TEXT", unique = true)
+    private String coupleCode;
+
+    @Column(name="partner_id", columnDefinition = "TEXT")
+    private String partnerId;
+
     @Column(name = "is_subscribed", nullable = false)
     private boolean isSubscribed = false;
 
@@ -32,7 +38,6 @@ public class User {
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -40,7 +45,6 @@ public class User {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -48,7 +52,6 @@ public class User {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -56,7 +59,6 @@ public class User {
     public LocalDate getBirthDate() {
         return birthDate;
     }
-
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
@@ -64,15 +66,19 @@ public class User {
     public String getJob() {
         return job;
     }
-
     public void setJob(String job) {
         this.job = job;
     }
 
+    public String getCoupleCode() { return coupleCode; }
+    public void setCoupleCode(String coupleCode) { this.coupleCode = coupleCode; }
+
+    public String getPartnerId() { return partnerId; }
+    public void setPartnerId(String partnerId) { this.partnerId = partnerId; }
+
     public boolean isSubscribed() {
         return isSubscribed;
     }
-
     public void setSubscribed(boolean subscribed) {
         isSubscribed = subscribed;
     }
@@ -84,6 +90,8 @@ public class User {
         user.setName(dto.getName());
         user.setBirthDate(dto.getBirthDate());
         user.setJob(dto.getJob());
+        user.setCoupleCode(dto.getCoupleCode());
+        user.setPartnerId(dto.getPartnerId());
         user.setSubscribed(dto.getIsSubscribed() != null && dto.getIsSubscribed());
         return user;
     }

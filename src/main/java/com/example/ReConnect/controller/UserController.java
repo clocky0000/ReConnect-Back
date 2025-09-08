@@ -67,5 +67,33 @@ public class UserController {
                     .body("사용자 조회 오류");
         }
     }
+
+    // 연인 코드 발급
+    @PostMapping("/{userId}/coupleCode")
+    public ResponseEntity<UserDto> generateCoupleCode(@PathVariable String userId) {
+        try {
+            UserDto dto = userService.assignCoupleCode(userId);
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    // 연인 코드 연결
+    @PostMapping("/{userId}/connect")
+    public ResponseEntity<UserDto> connectWithCoupleCode(
+            @PathVariable String userId,
+            @RequestParam String coupleCode) {
+        if (coupleCode == null || coupleCode.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            UserDto dto = userService.connectWithCoupleCode(userId, coupleCode);
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }
 
