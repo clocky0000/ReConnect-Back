@@ -46,8 +46,15 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
         // 이전 연인과 관계 해제
-        if (user.getCoupleCode() != null) {
+        if (user.getCoupleCode() != null && user.getPartnerId() != null) {
+            User partner = userRepository.findById(user.getPartnerId()).orElse(null);
+            if (partner != null) {
+                partner.setCoupleCode(null);
+                partner.setPartnerId(null);
+                userRepository.save(partner);
+            }
             user.setCoupleCode(null);
+            user.setPartnerId(null);
         }
 
         String coupleCode;
@@ -74,6 +81,8 @@ public class UserService {
 
         user.setPartnerId(partner.getUserId());
         partner.setPartnerId(user.getUserId());
+
+        user.setCoupleCode(partner.getCoupleCode());
 
         userRepository.save(partner);
         userRepository.save(user);

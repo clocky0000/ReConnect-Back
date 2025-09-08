@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String job;
 
-    @Column(name="couple_code", columnDefinition = "TEXT", unique = true)
+    @Column(name="couple_code", columnDefinition = "TEXT")
     private String coupleCode;
 
     @Column(name="partner_id", columnDefinition = "TEXT")
