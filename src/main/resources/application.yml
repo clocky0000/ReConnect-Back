@@ -16,3 +16,7 @@ spring:
   jackson:
     serialization:
       indent_output: true
+
+app:
+  crypto:
+    key-base64: ${APP_ENC_KEY}
