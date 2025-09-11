@@ -12,9 +12,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // CSRF 보안 비활성화 (Postman 테스트 목적)
-                .authorizeHttpRequests()
-                .anyRequest().permitAll(); // 모든 요청을 인증 없이 허용
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
+                .headers(h -> h
+                                // HSTS는 HTTPS에서만 유효하지만 컴파일/런타임엔 문제 없음
+                                .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).preload(true))
+                                .frameOptions(f -> f.deny())
+                )
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return http.build();
     }

@@ -5,6 +5,8 @@ import com.example.ReConnect.entity.User;
 import com.example.ReConnect.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -12,14 +14,20 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void save(UserDto dto) {
         User user = User.toUser(dto);
+        if (!isArgon2Hash(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
@@ -29,7 +37,7 @@ public class UserService {
 
     public UserDto login(UserDto dto) {
         User user = userRepository.findById(dto.getUserId()).orElse(null);
-        if (user != null && user.getPassword().equals(dto.getPassword())) {
+        if (user != null && passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             return UserDto.toDto(user);
         }
         return null;
@@ -41,6 +49,7 @@ public class UserService {
     }
 
     // 연인 코드 생성
+    @Transactional
     public UserDto assignCoupleCode(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
@@ -63,11 +72,13 @@ public class UserService {
         }while(userRepository.findByCoupleCode(coupleCode).isPresent());
 
         user.setCoupleCode(coupleCode);
+
         userRepository.save(user);
 
         return UserDto.toDto(user);
     }
 
+    @Transactional
     public UserDto connectWithCoupleCode(String userId, String coupleCode) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
@@ -85,8 +96,13 @@ public class UserService {
         user.setCoupleCode(partner.getCoupleCode());
 
         userRepository.save(partner);
+
         userRepository.save(user);
 
         return UserDto.toDto(user);
+    }
+
+    private boolean isArgon2Hash(String s) {
+        return s != null && s.startsWith("$argon2");
     }
 }

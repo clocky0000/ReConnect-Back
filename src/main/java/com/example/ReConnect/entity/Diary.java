@@ -1,6 +1,7 @@
 package com.example.ReConnect.entity;
 
 import jakarta.persistence.*;
+import com.example.ReConnect.persistence.EncryptedStringConverter;
 
 import java.time.LocalDate;
 
@@ -23,6 +24,7 @@ public class Diary {
     @Column(name = "question_number", nullable = false)
     private Integer questionNumber;
 
+    @Convert(converter = EncryptedStringConverter.class)
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 

@@ -24,6 +24,7 @@ services:
       - "8080:8080"
     environment:
       TZ: Asia/Seoul
+      APP_ENC_KEY: "a5fuR4bshAMWQwSy4zSKJNokjc7b3DA/SqIIOT9YC9o="
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ReConnect
       SPRING_DATASOURCE_USERNAME: reconnect
       SPRING_DATASOURCE_PASSWORD: 1234
