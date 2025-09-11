@@ -25,26 +25,26 @@ public class ReportReasonsController {
         this.diaryService = diaryService;
     }
 
-    @GetMapping("/{userId}/{date}")
-    public ResponseEntity<ReportReasonsDto> getReportReasons(@PathVariable String userId,
-                                                             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        Diary diary = diaryService.getDiaryEntity(userId, date);
-        ReportReasonsDto reportReasonsDto = reportReasonsService.getReportReasons(diary);
-
-        return ResponseEntity.ok(reportReasonsDto);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> saveReportReasons(@RequestBody ReportReasonsDto dto, HttpSession session) throws JsonProcessingException {
-        String userId = (String) session.getAttribute("loginId");
-        if(userId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
-
-        LocalDate date = dto.getDate();
-        Diary diary = diaryService.getDiaryEntity(userId, date);
-
-        reportReasonsService.saveReportReasons(dto, diary);
-        return ResponseEntity.ok().body("이유 저장 완료");
-    }
+//    @GetMapping("/{userId}/{date}")
+//    public ResponseEntity<ReportReasonsDto> getReportReasons(@PathVariable String userId,
+//                                                             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+//        Diary diary = diaryService.getDiaryEntity(userId, date);
+//        ReportReasonsDto reportReasonsDto = reportReasonsService.getReportReasons(diary);
+//
+//        return ResponseEntity.ok(reportReasonsDto);
+//    }
+//
+//    @PostMapping("/save")
+//    public ResponseEntity<?> saveReportReasons(@RequestBody ReportReasonsDto dto, HttpSession session) throws JsonProcessingException {
+//        String userId = (String) session.getAttribute("loginId");
+//        if(userId == null) {
+//            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+//        }
+//
+//        LocalDate date = dto.getDate();
+//        Diary diary = diaryService.getDiaryEntity(userId, date);
+//
+//        reportReasonsService.saveReportReasons(dto, diary);
+//        return ResponseEntity.ok().body("이유 저장 완료");
+//    }
 }

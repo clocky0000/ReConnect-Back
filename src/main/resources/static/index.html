@@ -41,17 +41,51 @@
 <hr/>
 
 <h2>📔 감정일기 작성</h2>
-<label>Title: <input id="diaryTitle" /></label><br/>
-<label>Content:<br/><textarea id="diaryContent" rows="4" cols="50"></textarea></label><br/>
+<label>번호 선택:
+    <select id="questionNumber">
+        <!-- 1부터 36까지 옵션 생성 -->
+        <script>
+            for (let i = 1; i <= 36; i++) {
+                document.write(`<option value="${i}">${i}</option>`);
+            }
+        </script>
+    </select>
+</label><br/>
+<label>Content:<br/>
+    <textarea id="diaryContent" rows="4" cols="50"></textarea>
+</label><br/>
 <button onclick="submitDiary()">일기 저장</button>
-
 <hr/>
 
 <h2>📅 일기 및 분석 보고서 확인</h2>
-<label>날짜 선택: <input type="date" id="calendar" /></label><br/>
+<label>번호 선택:
+    <select id="myDiaryCalendar">
+        <!-- 1부터 36까지 옵션 생성 -->
+        <script>
+            for (let i = 1; i <= 36; i++) {
+                document.write(`<option value="${i}">${i}</option>`);
+            }
+        </script>
+    </select>
+</label>
+<button onclick="loadDiaryAndReport(document.getElementById('myDiaryCalendar').value)">조회하기</button>
+<br/>
 
 <h3>📓 작성된 일기</h3>
 <pre id="diaryResult" style="white-space: pre-wrap; background-color: #f9f9f9; padding: 10px;"></pre>
+
+<h2>💞 파트너 일기 확인</h2>
+<label>번호 선택 (파트너 일기):
+    <select id="partnerDiaryCalendar">
+        <script>
+            for (let i = 1; i <= 36; i++) {
+                document.write(`<option value="${i}">${i}</option>`);
+            }
+        </script>
+    </select>
+</label>
+<button onclick="loadPartnerDiary(document.getElementById('partnerDiaryCalendar').value)">파트너 일기 조회</button>
+<pre id="partnerDiaryResult" style="white-space: pre-wrap; background-color: #fff0f6; padding: 10px;"></pre>
 
 <h3>📑 분석 요약 (키워드 등)</h3>
 <pre id="reportResult" style="white-space: pre-wrap; background-color: #f0f0f0; padding: 10px;"></pre>

@@ -5,16 +5,16 @@ import java.time.LocalDate;
 public class DiaryRequestDto {
 
     private String userId;
-    private String title;
-    private LocalDate date;
+    private String coupleCode;
+    private Integer questionNumber;
     private String content;
 
     public DiaryRequestDto() {}
 
-    public DiaryRequestDto(String userId, LocalDate date, String title, String content) {
+    public DiaryRequestDto(String userId, String coupleCode, Integer questionNumber, String content) {
         this.userId = userId;
-        this.date = date;
-        this.title = title;
+        this.coupleCode = coupleCode;
+        this.questionNumber = questionNumber;
         this.content = content;
     }
 
@@ -22,15 +22,8 @@ public class DiaryRequestDto {
     public String getUserId() {
         return userId;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
+    public String getCoupleCode() { return coupleCode; }
+    public Integer getQuestionNumber() { return questionNumber; }
     public String getContent() {
         return content;
     }
@@ -38,15 +31,8 @@ public class DiaryRequestDto {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
+    public void setCoupleCode(String coupleCode) { this.coupleCode = coupleCode; }
+    public void setQuestionNumber(Integer questionNumber) { this.questionNumber = questionNumber; }
     public void setContent(String content) {
         this.content = content;
     }

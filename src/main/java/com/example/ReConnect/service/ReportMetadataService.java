@@ -23,7 +23,7 @@ public class ReportMetadataService {
     public void saveReportMetadata(ReportMetadataDto reportMetadataDto, Diary diary) {
         ReportMetadata reportMetadata = new ReportMetadata();
         reportMetadata.setUserId(diary.getUserId());
-        reportMetadata.setDate(diary.getDate());
+        //reportMetadata.setDate(diary.getDate());
         reportMetadata.setDiary(diary);
         reportMetadata.setPHQ8Meta(reportMetadataDto.getPHQ8Meta());
         reportMetadata.setGAD7Meta(reportMetadataDto.getGAD7Meta());

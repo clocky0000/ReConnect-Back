@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
-    Optional<Diary> findByUserIdAndDate(String userId, LocalDate date);
+    Optional<Diary> findByUserIdAndCoupleCodeAndQuestionNumber(String userId, String coupleCode, Integer questionNumber);
 }

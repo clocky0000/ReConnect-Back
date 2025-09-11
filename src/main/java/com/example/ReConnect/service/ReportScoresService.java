@@ -24,7 +24,7 @@ public class ReportScoresService {
     public void saveReportScores(ReportScoresDto reportScoresDto, Diary diary) {
         ReportScores reportScores = new ReportScores();
         reportScores.setUserId(diary.getUserId());
-        reportScores.setDate(diary.getDate());
+        //reportScores.setDate(diary.getDate());
         reportScores.setDiary(diary);
         reportScores.setPHQ8Scores(reportScoresDto.getPHQ8Scores());
         reportScores.setGAD7Scores(reportScoresDto.getGAD7Scores());

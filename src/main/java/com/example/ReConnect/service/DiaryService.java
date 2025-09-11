@@ -1,54 +1,87 @@
 package com.example.ReConnect.service;
 
 import com.example.ReConnect.dto.DiaryRequestDto;
+import com.example.ReConnect.dto.UserDto;
 import com.example.ReConnect.entity.Diary;
 import com.example.ReConnect.repository.DiaryRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final UserService userService;
 
-    public DiaryService(DiaryRepository diaryRepository) {
+    public DiaryService(DiaryRepository diaryRepository, UserService userService) {
         this.diaryRepository = diaryRepository;
+        this.userService = userService;
     }
 
-    public void submitDiary(DiaryRequestDto dto, String userId) {
-        LocalDate today = LocalDate.now();
-        LocalDate diaryDate = dto.getDate();
-        
-        // 날짜 검증: 최대 3일 전까지 일기 작성 가능
-        if(diaryDate.isBefore(today.minusDays(3)) || diaryDate.isAfter(today)) {
-            throw new IllegalArgumentException("일기는 최대 3일 전까지만 작성 가능");
+    public void submitDiary(DiaryRequestDto dto, String userId, String coupleCode, Integer questionNumber) {
+        UserDto user = userService.findById(userId);
+
+        if (user.getPartnerId() == null || user.getPartnerId().isEmpty()) {
+            throw new IllegalStateException("연인이 연결되어 있어야 일기를 작성할 수 있습니다.");
         }
 
-        // 날짜 중복 확인
-        boolean exists = diaryRepository.findByUserIdAndDate(userId, diaryDate).isPresent();
-        if (exists) {
-            throw new IllegalArgumentException("이미 일기를 작성하셨습니다");
+        if (questionNumber > 1) {
+            int prevQuestionNumber = questionNumber - 1;
+
+            // 이전 문항
+            Diary myPrevDiary = diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(userId, coupleCode, prevQuestionNumber)
+                    .orElse(null);
+            if (myPrevDiary == null) {
+                throw new IllegalStateException("이전 문항을 먼저 작성해주세요.");
+            }
+
+            // 파트너
+            String partnerId = user.getPartnerId();
+            Diary partnerPrevDiary = diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(partnerId, coupleCode, prevQuestionNumber)
+                    .orElse(null);
+            if (partnerPrevDiary == null) {
+                throw new IllegalStateException("연인이 이전 문항을 작성해야 다음 문항을 작성할 수 있습니다.");
+            }
         }
 
         Diary diary = new Diary();
         diary.setUserId(userId);
-        diary.setTitle(dto.getTitle());
-        diary.setDate(dto.getDate());
+        diary.setCoupleCode(coupleCode);
+        diary.setQuestionNumber(questionNumber);
         diary.setContent(dto.getContent());
         diaryRepository.save(diary);
     }
 
-    public DiaryRequestDto getDiary(String userId, LocalDate date) {
-        Diary diary = diaryRepository.findByUserIdAndDate(userId, date)
-                .orElseThrow(() -> new RuntimeException("해당 일기를 찾을 수 없습니다."));
+    public DiaryRequestDto getDiary(String userId, String coupleCode, Integer questionNumber) {
+        Diary diary = diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(userId, coupleCode, questionNumber)
+                .orElse(null);
+        if (diary == null) {
+            return null;
+        }
 
-        return new DiaryRequestDto(diary.getUserId(), diary.getDate(), diary.getTitle(), diary.getContent());
+        return new DiaryRequestDto(diary.getUserId(), diary.getCoupleCode(), diary.getQuestionNumber(), diary.getContent());
     }
 
-    public Diary getDiaryEntity(String userId, LocalDate date) {
-        return diaryRepository.findByUserIdAndDate(userId, date)
+    public Diary getDiaryEntity(String userId, String coupleCode, Integer questionNumber) {
+        return diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(userId, coupleCode, questionNumber)
                 .orElseThrow(() -> new RuntimeException("해당 일기를 찾을 수 없습니다."));
     }
 
+    public DiaryRequestDto getPartnerDiary(String partnerId, String coupleCode, Integer questionNumber) {
+        if (partnerId == null || partnerId.isEmpty()) {
+            throw new IllegalStateException("연인을 먼저 지정해주세요.");
+        }
+
+        Diary partnerDiary = diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(partnerId, coupleCode, questionNumber)
+                .orElse(null);
+        if (partnerDiary == null) {
+            return null;
+        }
+
+        return new DiaryRequestDto(
+                partnerDiary.getUserId(),
+                partnerDiary.getCoupleCode(),
+                partnerDiary.getQuestionNumber(),
+                partnerDiary.getContent()
+        );
+    }
 }
