@@ -23,7 +23,7 @@ public class ReportReasonsService {
     public void saveReportReasons(ReportReasonsDto reportReasonsDto, Diary diary) {
         ReportReasons reportReasons = new ReportReasons();
         reportReasons.setUserId(diary.getUserId());
-        reportReasons.setDate(diary.getDate());
+        //reportReasons.setDate(diary.getDate());
         reportReasons.setDiary(diary);
         reportReasons.setKeyEmotions(reportReasonsDto.getKeyEmotions());
         reportReasons.setCoreKeywords(reportReasonsDto.getCoreKeywords());

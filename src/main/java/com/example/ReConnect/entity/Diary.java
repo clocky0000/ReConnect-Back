@@ -15,11 +15,13 @@ public class Diary {
     @Column(nullable = false)
     private String userId;
 
-    @Column(nullable = false)
-    private String title;
+    // 연인 코드
+    @Column(name = "couple_code", nullable = false, columnDefinition = "TEXT")
+    private String coupleCode;
 
-    @Column(nullable = false)
-    private LocalDate date;
+    // 문항 번호
+    @Column(name = "question_number", nullable = false)
+    private Integer questionNumber;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -43,21 +45,11 @@ public class Diary {
     public Diary() {}
 
     // Getters
-    public Long getId() {
-        return id;
-    }
-    public String getUserId() {
-        return userId;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public LocalDate getDate() {
-        return date;
-    }
-    public String getContent() {
-        return content;
-    }
+    public Long getId() { return id; }
+    public String getUserId() { return userId; }
+    public String getCoupleCode() { return coupleCode; }
+    public Integer getQuestionNumber() { return questionNumber; }
+    public String getContent() { return content; }
 
     public ReportReasons getReportReasons() { return reportReasons; }
     public ReportScores getReportScores() { return reportScores; }
@@ -66,21 +58,11 @@ public class Diary {
     public ReportText getReportText() { return reportText; }
 
     // Setters
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-    public void setContent(String content) {
-        this.content = content;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setUserId(String userId) { this.userId = userId; }
+    public void setCoupleCode(String coupleCode) { this.coupleCode = coupleCode; }
+    public void setQuestionNumber(Integer questionNumber) { this.questionNumber = questionNumber; }
+    public void setContent(String content) { this.content = content; }
     public void setReportReasons(ReportReasons reportReasons) {
         this.reportReasons = reportReasons;
         if(reportReasons != null) {

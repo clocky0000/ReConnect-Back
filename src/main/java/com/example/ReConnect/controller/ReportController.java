@@ -24,27 +24,27 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @GetMapping("/{userId}/{date}")     /*이게 postman으로 api 테스트 할때 사용하는 용도 - db에 있는 보고서 가져오기*/
-    public ResponseEntity<ReportResponseDto> getReport(@PathVariable String userId,
-                                            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        ReportResponseDto reportDto = reportService.getReport(userId, date);
-        return ResponseEntity.ok(reportDto);
-    }
-
-    @GetMapping("/get")         /*위에랑 같은 거긴 한데 html에서 테스트 할때 보려고 사용한 용도임 - db에 있는 보고서 가져오기*/
-    public ResponseEntity<ReportResponseDto> getReportQuery(@RequestParam String userId,
-                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        ReportResponseDto reportDto = reportService.getReport(userId, date);
-        return ResponseEntity.ok(reportDto);
-    }
-
-    @PostMapping("/save")               /*이건 그냥 보고서 저장인디 JSON 형태 저장하는거 테스트한거임*/
-    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto dto, HttpSession session) throws JsonProcessingException {
-        String userId = (String) session.getAttribute("loginId");
-        if (userId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
-        reportService.saveReport(dto, userId);
-        return ResponseEntity.ok("분석 저장 완료");
-    }
+//    @GetMapping("/{userId}/{date}")     /*이게 postman으로 api 테스트 할때 사용하는 용도 - db에 있는 보고서 가져오기*/
+//    public ResponseEntity<ReportResponseDto> getReport(@PathVariable String userId,
+//                                            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+//        ReportResponseDto reportDto = reportService.getReport(userId, date);
+//        return ResponseEntity.ok(reportDto);
+//    }
+//
+//    @GetMapping("/get")         /*위에랑 같은 거긴 한데 html에서 테스트 할때 보려고 사용한 용도임 - db에 있는 보고서 가져오기*/
+//    public ResponseEntity<ReportResponseDto> getReportQuery(@RequestParam String userId,
+//                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+//        ReportResponseDto reportDto = reportService.getReport(userId, date);
+//        return ResponseEntity.ok(reportDto);
+//    }
+//
+//    @PostMapping("/save")               /*이건 그냥 보고서 저장인디 JSON 형태 저장하는거 테스트한거임*/
+//    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto dto, HttpSession session) throws JsonProcessingException {
+//        String userId = (String) session.getAttribute("loginId");
+//        if (userId == null) {
+//            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+//        }
+//        reportService.saveReport(dto, userId);
+//        return ResponseEntity.ok("분석 저장 완료");
+//    }
 }

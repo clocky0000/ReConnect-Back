@@ -20,39 +20,39 @@ public class ReportTextService {
         this.diaryRepository = diaryRepository;
     }
 
-    public ReportTextDto getReportText(String userId, LocalDate date) {
-        ReportText reportText = reportTextRepository.findByUserIdAndDate(userId, date)
-                .orElseThrow(() -> new RuntimeException("텍스트 및 지표 없음"));
-        return new ReportTextDto(
-                reportText.getUserId(),
-                reportText.getDate(),
-                reportText.getReportText(),
-                reportText.getStress(),
-                reportText.getEnergy(),
-                reportText.getEmotion(),
-                reportText.getDepression(),
-                reportText.getAnxiety()
-        );
-    }
-
-    public void saveReportText(ReportTextDto reportTextDto, String userId) {
-        ReportText reportText = new ReportText();
-
-        reportText.setUserId(userId);
-        LocalDate date = reportTextDto.getDate();
-        reportText.setDate(date);
-
-        Diary diary = diaryRepository.findByUserIdAndDate(userId, date)
-                        .orElseThrow(() -> new RuntimeException("해당 일기가 없습니다."));
-        reportText.setDiary(diary);
-
-        reportText.setReportText(reportTextDto.getReportText());
-        reportText.setStress(reportTextDto.getStress());
-        reportText.setEnergy(reportTextDto.getEnergy());
-        reportText.setEmotion(reportTextDto.getEmotion());
-        reportText.setDepression(reportTextDto.getDepression());
-        reportText.setAnxiety(reportTextDto.getAnxiety());
-
-        reportTextRepository.save(reportText);
-    }
+//    public ReportTextDto getReportText(String userId, LocalDate date) {
+//        ReportText reportText = reportTextRepository.findByUserIdAndDate(userId, date)
+//                .orElseThrow(() -> new RuntimeException("텍스트 및 지표 없음"));
+//        return new ReportTextDto(
+//                reportText.getUserId(),
+//                reportText.getDate(),
+//                reportText.getReportText(),
+//                reportText.getStress(),
+//                reportText.getEnergy(),
+//                reportText.getEmotion(),
+//                reportText.getDepression(),
+//                reportText.getAnxiety()
+//        );
+//    }
+//
+//    public void saveReportText(ReportTextDto reportTextDto, String userId) {
+//        ReportText reportText = new ReportText();
+//
+//        reportText.setUserId(userId);
+//        LocalDate date = reportTextDto.getDate();
+//        reportText.setDate(date);
+//
+//        Diary diary = diaryRepository.findByUserIdAndDate(userId, date)
+//                        .orElseThrow(() -> new RuntimeException("해당 일기가 없습니다."));
+//        reportText.setDiary(diary);
+//
+//        reportText.setReportText(reportTextDto.getReportText());
+//        reportText.setStress(reportTextDto.getStress());
+//        reportText.setEnergy(reportTextDto.getEnergy());
+//        reportText.setEmotion(reportTextDto.getEmotion());
+//        reportText.setDepression(reportTextDto.getDepression());
+//        reportText.setAnxiety(reportTextDto.getAnxiety());
+//
+//        reportTextRepository.save(reportText);
+//    }
 }

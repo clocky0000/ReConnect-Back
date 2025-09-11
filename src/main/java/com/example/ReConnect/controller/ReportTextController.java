@@ -20,20 +20,20 @@ public class ReportTextController {
         this.reportTextService = reportTextService;
     }
 
-    @GetMapping("/{userId}/{date}")
-    public ResponseEntity<ReportTextDto> getReportText(@PathVariable String userId,
-                                                       @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        ReportTextDto reportTextDto = reportTextService.getReportText(userId, date);
-        return ResponseEntity.ok(reportTextDto);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> saveReportText(@RequestBody ReportTextDto dto, HttpSession session) throws JsonProcessingException {
-        String userId = (String) session.getAttribute("loginId");
-        if (userId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
-        reportTextService.saveReportText(dto, userId);
-        return ResponseEntity.ok("줄글 텍스트 저장 완료");
-    }
+//    @GetMapping("/{userId}/{date}")
+//    public ResponseEntity<ReportTextDto> getReportText(@PathVariable String userId,
+//                                                       @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+//        ReportTextDto reportTextDto = reportTextService.getReportText(userId, date);
+//        return ResponseEntity.ok(reportTextDto);
+//    }
+//
+//    @PostMapping("/save")
+//    public ResponseEntity<?> saveReportText(@RequestBody ReportTextDto dto, HttpSession session) throws JsonProcessingException {
+//        String userId = (String) session.getAttribute("loginId");
+//        if (userId == null) {
+//            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+//        }
+//        reportTextService.saveReportText(dto, userId);
+//        return ResponseEntity.ok("줄글 텍스트 저장 완료");
+//    }
 }

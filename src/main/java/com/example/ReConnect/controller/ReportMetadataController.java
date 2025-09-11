@@ -28,27 +28,27 @@ public class ReportMetadataController {
         this.reportMetadataService = reportMetadataService;
         this.diaryService = diaryService;
     }
-
-    @GetMapping("/{userId}/{date}")
-    public ResponseEntity<ReportMetadataDto> getReportMetadata(@PathVariable String userId,
-                                                            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate date) {
-        Diary diary = diaryService.getDiaryEntity(userId, date);
-        ReportMetadataDto reportMetadataDto = reportMetadataService.getReportMeta(diary);
-
-        return ResponseEntity.ok(reportMetadataDto);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> saveReportMetadata(@RequestBody ReportMetadataDto dto, HttpSession session) throws JsonProcessingException {
-        String userId = (String) session.getAttribute("loginId");
-        if (userId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
-
-        LocalDate date = dto.getDate();
-        Diary diary = diaryService.getDiaryEntity(userId, date);
-
-        reportMetadataService.saveReportMetadata(dto, diary);
-        return ResponseEntity.ok().body("메타 저장 완료");
-    }
+//
+//    @GetMapping("/{userId}/{date}")
+//    public ResponseEntity<ReportMetadataDto> getReportMetadata(@PathVariable String userId,
+//                                                            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate date) {
+//        Diary diary = diaryService.getDiaryEntity(userId, date);
+//        ReportMetadataDto reportMetadataDto = reportMetadataService.getReportMeta(diary);
+//
+//        return ResponseEntity.ok(reportMetadataDto);
+//    }
+//
+//    @PostMapping("/save")
+//    public ResponseEntity<?> saveReportMetadata(@RequestBody ReportMetadataDto dto, HttpSession session) throws JsonProcessingException {
+//        String userId = (String) session.getAttribute("loginId");
+//        if (userId == null) {
+//            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+//        }
+//
+//        LocalDate date = dto.getDate();
+//        Diary diary = diaryService.getDiaryEntity(userId, date);
+//
+//        reportMetadataService.saveReportMetadata(dto, diary);
+//        return ResponseEntity.ok().body("메타 저장 완료");
+//    }
 }

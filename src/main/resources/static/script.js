@@ -67,6 +67,7 @@ async function login() {
       body: JSON.stringify({ userId, password })
     });
 
+    const coupleCodeEl = document.getElementById('coupleCodeResult');
     if (response.ok) {
       const data = await response.json();
       loggedInUserId = data.userId;
@@ -76,8 +77,10 @@ async function login() {
         document.getElementById('coupleCodeResult').innerText =
             `이미 발급된 연인 코드가 있습니다.\n`
             + `💌 연인 코드: ${data.coupleCode}`;
+        coupleCodeEl.dataset.coupleCode = data.coupleCode; // dataset에 저장
       } else {
         document.getElementById('coupleCodeResult').innerText = '연인 코드가 없습니다.';
+        coupleCodeEl.dataset.coupleCode = null;
       }
     } else {
       document.getElementById('loginStatus').innerText = '❌ 로그인 실패: 아이디 또는 비밀번호를 확인해주세요.';
@@ -95,14 +98,21 @@ async function submitDiary() {
     return;
   }
 
-  const title = document.getElementById('diaryTitle').value;
+  // questionNumber 선택
+  const questionNumber = parseInt(document.getElementById('questionNumber').value);
   const content = document.getElementById('diaryContent').value;
 
+  if (!content) {
+    alert('내용을 입력해주세요.');
+    return;
+  }
+
+  // coupleCode는 로그인 시 이미 받아온 데이터를 사용
+  const coupleCode = document.getElementById('coupleCodeResult').dataset.coupleCode || null;
+
   const body = {
-    title,
     content,
-    submitted: false
-    // 날짜는 백엔드에서 LocalDate.now() 로 자동 처리
+    questionNumber
   };
 
   try {
@@ -114,7 +124,9 @@ async function submitDiary() {
     });
 
     if (response.ok) {
-      alert('일기가 성공적으로 저장되었습니다.');
+      alert(`${questionNumber}번 일기가 성공적으로 저장되었습니다.`);
+      // 입력값 초기화
+      document.getElementById('diaryContent').value = '';
     } else {
       const error = await response.text();
       alert(`저장 실패: ${error}`);
@@ -125,88 +137,119 @@ async function submitDiary() {
   }
 }
 
-// 📆 달력 선택 시 조회
-document.addEventListener('DOMContentLoaded', () => {
-  const calendar = document.getElementById('calendar');
-  calendar.addEventListener('change', () => {
-    if (!loggedInUserId) {
-      alert('로그인 후 이용해주세요.');
-      return;
-    }
+// 📄 내 일기 + 보고서 조회
+async function loadDiaryAndReport(questionNumber) {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
 
-    const selectedDate = calendar.value;
-    if (selectedDate) {
-      loadDiaryAndReport(selectedDate);
-    }
-  });
-});
+  if (!questionNumber || isNaN(questionNumber)) {
+    alert('번호를 선택해주세요.');
+    return;
+  }
 
-// 📄 일기 + 보고서 조회
-async function loadDiaryAndReport(date) {
+  const coupleCode = document.getElementById('coupleCodeResult').dataset.coupleCode;
+  if (!coupleCode) {
+    alert('연인 코드가 존재하지 않습니다.');
+    return;
+  }
+
+  // 내 일기 영역 초기화
   document.getElementById('diaryResult').innerText = '불러오는 중...';
   document.getElementById('reportResult').innerText = '불러오는 중...';
   document.getElementById('reportTextResult').innerText = '불러오는 중...';
 
   try {
-    // 1. 일기 불러오기
-    const diaryRes = await fetch(`/api/diary/${loggedInUserId}/${date}`, {
+    // 1. 내 일기 불러오기
+    const diaryRes = await fetch(`/api/diary/${loggedInUserId}/${coupleCode}/${questionNumber}`, {
       credentials: 'include'
     });
 
     if (diaryRes.ok) {
       const diary = await diaryRes.json();
       document.getElementById('diaryResult').innerText =
-          `제목: ${diary.title}\n\n내용:\n${diary.content}`;
+          `제목: 일기 ${questionNumber}번\n\n내용:\n${diary.content}`;
     } else {
       document.getElementById('diaryResult').innerText = '❌ 일기를 찾을 수 없습니다.';
     }
 
-    // 2. 보고서 (수치 요약용)
-    const reportRes = await fetch(`/api/report/get?userId=${loggedInUserId}&date=${date}`);
+    // 2. 보고서 불러오기
+    const reportRes = await fetch(`/api/report/getByQuestion?userId=${loggedInUserId}&questionNumber=${questionNumber}`);
     if (reportRes.ok) {
       const report = await reportRes.json();
       document.getElementById('reportResult').innerText =
-          `📌 ${report.reportTitle || '리포트'}\n\n\n` +
-          `✨ 요약 키워드: ${report.coreKeywords?.join(', ') || '없음'}\n\n` +
-          `😊 주요 감정: ${report.keyEmotions?.join(', ') || '없음'}\n\n` +
-          `💡 솔루션\n` +
-          `- 과거 솔루션: ${report.solution.past_solution || '없음'}\n` +
-          `- 현재 솔루션: ${report.solution.current_solution || '없음'}\n\n` +
-          `🧩 현재 분석\n` +
-          `- 문제점: ${report.currentAnalysis.problem || '없음'}\n` +
-          `- 생각 패턴: ${report.currentAnalysis.thought || '없음'}\n` +
-          `- 자원: ${report.currentAnalysis.resource || '없음'}\n\n` +
-          `💬 응원 메시지: ${report.feedbackAndCheer || '없음'}\n\n` +
-          `🔁 반복 패턴: ${report.repetitivePattern || '없음'}\n\n` +
-          `🌱 추천: ${report.recommendation || '없음'}\n\n`;
-
+          `📌 ${report.reportTitle || '리포트'}\n\n✨ 요약 키워드: ${report.coreKeywords?.join(', ') || '없음'}\n` +
+          `😊 주요 감정: ${report.keyEmotions?.join(', ') || '없음'}\n` +
+          `💡 솔루션\n- 과거: ${report.solution.past_solution || '없음'}\n- 현재: ${report.solution.current_solution || '없음'}\n` +
+          `🧩 현재 분석\n- 문제점: ${report.currentAnalysis.problem || '없음'}\n- 생각 패턴: ${report.currentAnalysis.thought || '없음'}\n- 자원: ${report.currentAnalysis.resource || '없음'}\n` +
+          `💬 응원 메시지: ${report.feedbackAndCheer || '없음'}\n` +
+          `🔁 반복 패턴: ${report.repetitivePattern || '없음'}\n🌱 추천: ${report.recommendation || '없음'}`;
     } else {
       document.getElementById('reportResult').innerText = '❌ 보고서를 찾을 수 없습니다.';
     }
 
     // 3. 줄글 분석 + 감정 지표
-    const textRes = await fetch(`/api/report/text/${loggedInUserId}/${date}`, {
+    const textRes = await fetch(`/api/report/text/${loggedInUserId}/${questionNumber}`, {
       credentials: 'include'
     });
     if (textRes.ok) {
       const textReport = await textRes.json();
       document.getElementById('reportTextResult').innerText =
-          `📘 줄글 요약:\n${textReport.reportText || '없음'}\n\n` +
-          `📊 감정 지표:\n` +
-          `- 스트레스: ${textReport.stress ?? 'N/A'}\n` +
-          `- 에너지: ${textReport.energy ?? 'N/A'}\n` +
-          `- 감정: ${textReport.emotion ?? 'N/A'}\n` +
-          `- 우울감: ${textReport.depression ?? 'N/A'}\n` +
-          `- 불안감: ${textReport.anxiety ?? 'N/A'}`;
+          `📘 줄글 요약:\n${textReport.reportText || '없음'}\n📊 감정 지표:\n` +
+          `- 스트레스: ${textReport.stress ?? 'N/A'}\n- 에너지: ${textReport.energy ?? 'N/A'}\n` +
+          `- 감정: ${textReport.emotion ?? 'N/A'}\n- 우울감: ${textReport.depression ?? 'N/A'}\n- 불안감: ${textReport.anxiety ?? 'N/A'}`;
     } else {
       document.getElementById('reportTextResult').innerText = '❌ 줄글 분석을 찾을 수 없습니다.';
     }
 
   } catch (error) {
-    console.error('불러오기 오류:', error);
+    console.error('내 일기 불러오기 오류:', error);
     document.getElementById('diaryResult').innerText = '서버 오류';
     document.getElementById('reportResult').innerText = '서버 오류';
     document.getElementById('reportTextResult').innerText = '서버 오류';
+  }
+}
+
+// 💞 파트너 일기 조회
+async function loadPartnerDiary(questionNumber) {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+
+  const coupleCode = document.getElementById('coupleCodeResult').dataset.coupleCode;
+  if (!coupleCode) {
+    alert('연인 코드가 존재하지 않습니다.');
+    return;
+  }
+
+  try {
+    const userRes = await fetch(`/api/user/${loggedInUserId}`, { credentials: 'include' });
+    if (!userRes.ok) {
+      alert('사용자 정보를 불러올 수 없습니다.');
+      return;
+    }
+    const userData = await userRes.json();
+    const partnerId = userData.partnerId;
+    if (!partnerId) {
+      alert('연인을 먼저 지정해주세요.');
+      return;
+    }
+
+    const partnerDiaryRes = await fetch(`/api/diary/partner/${questionNumber}`, { credentials: 'include' });
+    if (partnerDiaryRes.ok) {
+      const diary = await partnerDiaryRes.json();
+      document.getElementById('partnerDiaryResult').innerText =
+          `💞 파트너 일기 ${questionNumber}번\n\n내용:\n${diary.content}`;
+    } else {
+      const errorText = await partnerDiaryRes.text();
+      document.getElementById('partnerDiaryResult').innerText = `❌ 일기를 찾을 수 없습니다.`;
+    }
+
+  } catch (error) {
+    console.error('파트너 일기 불러오기 오류:', error);
+    document.getElementById('partnerDiaryResult').innerText = '서버 오류';
   }
 }
 
@@ -216,15 +259,18 @@ async function loadReportReasons() {
     alert('로그인 후 이용해주세요.');
     return;
   }
-  const date = document.getElementById('reportDate').value;
-  if (!date) {
-    alert('날짜를 선택해주세요.');
+
+  const questionNumber = parseInt(document.getElementById('questionNumber').value);
+  if (!questionNumber) {
+    alert('번호를 선택해주세요.');
     return;
   }
+
   try {
-    const res = await fetch(`/api/report/reasons/${loggedInUserId}/${date}`, {
+    const res = await fetch(`/api/report/reasons/${loggedInUserId}/${questionNumber}`, {
       credentials: 'include',
     });
+
     if (res.ok) {
       const data = await res.json();
       document.getElementById('reasonsResult').innerText = JSON.stringify(data, null, 2);
@@ -243,15 +289,18 @@ async function loadReportMetadata() {
     alert('로그인 후 이용해주세요.');
     return;
   }
-  const date = document.getElementById('reportDate').value;
-  if (!date) {
-    alert('날짜를 선택해주세요.');
+
+  const questionNumber = parseInt(document.getElementById('questionNumber').value);
+  if (!questionNumber) {
+    alert('번호를 선택해주세요.');
     return;
   }
+
   try {
-    const res = await fetch(`/api/report/metadata/${loggedInUserId}/${date}`, {
+    const res = await fetch(`/api/report/metadata/${loggedInUserId}/${questionNumber}`, {
       credentials: 'include',
     });
+
     if (res.ok) {
       const data = await res.json();
       document.getElementById('metadataResult').innerText = JSON.stringify(data, null, 2);
@@ -270,15 +319,18 @@ async function loadReportScores() {
     alert('로그인 후 이용해주세요.');
     return;
   }
-  const date = document.getElementById('reportDate').value;
-  if (!date) {
-    alert('날짜를 선택해주세요.');
+
+  const questionNumber = parseInt(document.getElementById('questionNumber').value);
+  if (!questionNumber) {
+    alert('번호를 선택해주세요.');
     return;
   }
+
   try {
-    const res = await fetch(`/api/report/scores/${loggedInUserId}/${date}`, {
+    const res = await fetch(`/api/report/scores/${loggedInUserId}/${questionNumber}`, {
       credentials: 'include',
     });
+
     if (res.ok) {
       const data = await res.json();
       document.getElementById('scoresResult').innerText = JSON.stringify(data, null, 2);
