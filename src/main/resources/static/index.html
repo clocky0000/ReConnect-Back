@@ -113,5 +113,17 @@
 
 
 <script src="script.js"></script>
+
+<hr/>
+<h2>🧩 설문 저장/조회 (간단 테스트)</h2>
+    <div id="surveyInputs"></div>
+<div>
+    <label>Total_anxiety: <input type="number" id="svTA" min="0"></label>
+    <label>Total_avoidance: <input type="number" id="svTV" min="0"></label>
+</div>
+<button onclick="saveSurvey()">저장</button>
+<button onclick="loadSurvey()">가져오기</button>
+<pre id="svOut"></pre>
+
 </body>
 </html>

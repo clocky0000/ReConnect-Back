@@ -91,6 +91,7 @@ async function login() {
   }
 }
 
+
 // 📔 일기 저장 함수
 async function submitDiary() {
   if (!loggedInUserId) {
@@ -403,5 +404,46 @@ async function connectWithCoupleCode() {
   } catch (error) {
     console.error('연인 연결 오류:', error);
     document.getElementById('connectStatus').innerText = '서버 오류로 연결 실패';
+  }
+}
+
+async function saveSurvey(){
+  const body = {
+    totalAnxiety: parseInt(document.getElementById('svTA').value) || null,
+    totalAvoidance: parseInt(document.getElementById('svTV').value) || null
+  };
+  for (let i = 1; i <= 36; i++) {
+      const el = document.getElementById(`svQ${i}`);
+      const v  = el ? parseInt(el.value, 10) : NaN;
+      body[`q${i}`] = Number.isFinite(v) ? v : null;
+    }
+  const res = await fetch('/api/survey/save',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  document.getElementById('svOut').innerText = res.ok ? '✅ 저장됨' : '❌ 저장 실패';
+}
+
+function renderSurveyInputs() {
+  const wrap = document.getElementById('surveyInputs');
+  wrap.innerHTML = '';
+  for (let i = 1; i <= 36; i++) {
+    const row = document.createElement('label');
+    row.style.display = 'inline-block';
+    row.style.margin = '4px 8px';
+    row.innerHTML = `Q${i}: <input type="number" id="svQ${i}" min="1" max="5">`;
+    wrap.appendChild(row);
+  }
+}
+document.addEventListener('DOMContentLoaded', renderSurveyInputs);
+
+async function loadSurvey(){
+  const res = await fetch('/api/survey/me', { credentials: 'include' });
+  const out = document.getElementById('svOut');
+  if(res.ok){
+    out.innerText = JSON.stringify(await res.json(), null, 2);
+  }else{
+    out.innerText = `❌ 없음/권한없음 (${res.status})`;
   }
 }
