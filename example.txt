@@ -197,3 +197,17 @@
     "depression": 0.3,
     "anxiety": 0.2
 }
+
+##설문 저장하기
+/api/survey/save
+{
+  "q1": 3,
+  "q2": 4,
+  "q3": 2,
+  // ... q4 ~ q36 (동일하게 모든 항목)
+  "totalAnxiety": 12,
+  "totalAvoidance": 9
+}
+
+## 설문 불러오기
+/api/survey/{userId}/{coupleCode}
