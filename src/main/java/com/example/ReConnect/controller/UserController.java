@@ -53,6 +53,12 @@ public class UserController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(jakarta.servlet.http.HttpSession session) {
+        session.invalidate(); // 세션을 삭제해옹
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUser(@PathVariable String userId) {
         try {
