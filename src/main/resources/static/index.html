@@ -87,29 +87,20 @@
 <button onclick="loadPartnerDiary(document.getElementById('partnerDiaryCalendar').value)">파트너 일기 조회</button>
 <pre id="partnerDiaryResult" style="white-space: pre-wrap; background-color: #fff0f6; padding: 10px;"></pre>
 
-<h3>📑 분석 요약 (키워드 등)</h3>
-<pre id="reportResult" style="white-space: pre-wrap; background-color: #f0f0f0; padding: 10px;"></pre>
-
-<h3>🧠 줄글 분석 및 감정 지표</h3>
-<pre id="reportTextResult" style="white-space: pre-wrap; background-color: #e8f4ff; padding: 10px;"></pre>
+<hr/>
+<h2>📦 아이템 리포트 제출/조회</h2>
+<label>아이템 번호: <input type="number" id="itemReportNumber" min="1" max="36"></label><br/>
+<button onclick="loadItemReport()">조회</button>
+<pre id="itemReportResult" style="white-space: pre-wrap; background-color: #f0f0f0; padding: 10px;"></pre>
 
 <hr/>
+<h2>📋 파이널 리포트 제출/조회</h2>
+<button onclick="loadFinalReport()">조회</button>
+<pre id="finalReportResult" style="white-space: pre-wrap; background-color: #e0f7fa; padding: 10px;"></pre>
 
-<h2>📊 보고서 상세 보기</h2>
-
-<label>조회할 날짜: <input type="date" id="reportDate" /></label><br/>
-<button onclick="loadReportReasons()">Reasons 조회</button>
-<button onclick="loadReportMetadata()">Metadata 조회</button>
-<button onclick="loadReportScores()">Scores 조회</button>
-
-<h3>Reasons</h3>
-<pre id="reasonsResult" style="white-space: pre-wrap; background-color: #fff4e5; padding: 10px;"></pre>
-
-<h3>Metadata</h3>
-<pre id="metadataResult" style="white-space: pre-wrap; background-color: #e5f7ff; padding: 10px;"></pre>
-
-<h3>Scores</h3>
-<pre id="scoresResult" style="white-space: pre-wrap; background-color: #e5ffe5; padding: 10px;"></pre>
+<script src="script.js"></script>
+</body>
+</html>
 
 
 <script src="script.js"></script>
