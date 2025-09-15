@@ -158,8 +158,6 @@ async function loadDiaryAndReport(questionNumber) {
 
   // 내 일기 영역 초기화
   document.getElementById('diaryResult').innerText = '불러오는 중...';
-  document.getElementById('reportResult').innerText = '불러오는 중...';
-  document.getElementById('reportTextResult').innerText = '불러오는 중...';
 
   try {
     // 1. 내 일기 불러오기
@@ -174,41 +172,9 @@ async function loadDiaryAndReport(questionNumber) {
     } else {
       document.getElementById('diaryResult').innerText = '❌ 일기를 찾을 수 없습니다.';
     }
-
-    // 2. 보고서 불러오기
-    const reportRes = await fetch(`/api/report/getByQuestion?userId=${loggedInUserId}&questionNumber=${questionNumber}`);
-    if (reportRes.ok) {
-      const report = await reportRes.json();
-      document.getElementById('reportResult').innerText =
-          `📌 ${report.reportTitle || '리포트'}\n\n✨ 요약 키워드: ${report.coreKeywords?.join(', ') || '없음'}\n` +
-          `😊 주요 감정: ${report.keyEmotions?.join(', ') || '없음'}\n` +
-          `💡 솔루션\n- 과거: ${report.solution.past_solution || '없음'}\n- 현재: ${report.solution.current_solution || '없음'}\n` +
-          `🧩 현재 분석\n- 문제점: ${report.currentAnalysis.problem || '없음'}\n- 생각 패턴: ${report.currentAnalysis.thought || '없음'}\n- 자원: ${report.currentAnalysis.resource || '없음'}\n` +
-          `💬 응원 메시지: ${report.feedbackAndCheer || '없음'}\n` +
-          `🔁 반복 패턴: ${report.repetitivePattern || '없음'}\n🌱 추천: ${report.recommendation || '없음'}`;
-    } else {
-      document.getElementById('reportResult').innerText = '❌ 보고서를 찾을 수 없습니다.';
-    }
-
-    // 3. 줄글 분석 + 감정 지표
-    const textRes = await fetch(`/api/report/text/${loggedInUserId}/${questionNumber}`, {
-      credentials: 'include'
-    });
-    if (textRes.ok) {
-      const textReport = await textRes.json();
-      document.getElementById('reportTextResult').innerText =
-          `📘 줄글 요약:\n${textReport.reportText || '없음'}\n📊 감정 지표:\n` +
-          `- 스트레스: ${textReport.stress ?? 'N/A'}\n- 에너지: ${textReport.energy ?? 'N/A'}\n` +
-          `- 감정: ${textReport.emotion ?? 'N/A'}\n- 우울감: ${textReport.depression ?? 'N/A'}\n- 불안감: ${textReport.anxiety ?? 'N/A'}`;
-    } else {
-      document.getElementById('reportTextResult').innerText = '❌ 줄글 분석을 찾을 수 없습니다.';
-    }
-
   } catch (error) {
     console.error('내 일기 불러오기 오류:', error);
     document.getElementById('diaryResult').innerText = '서버 오류';
-    document.getElementById('reportResult').innerText = '서버 오류';
-    document.getElementById('reportTextResult').innerText = '서버 오류';
   }
 }
 
@@ -445,5 +411,72 @@ async function loadSurvey(){
     out.innerText = JSON.stringify(await res.json(), null, 2);
   }else{
     out.innerText = `❌ 없음/권한없음 (${res.status})`;
+  }
+}
+
+// ====================== 아이템 리포트 조회 ======================
+async function loadItemReport() {
+  if (!loggedInUserId) {
+    alert('로그인 후 조회 가능합니다.');
+    return;
+  }
+
+  const itemId = parseInt(document.getElementById('itemReportNumber').value);
+  const coupleCode = document.getElementById('coupleCodeResult').dataset.coupleCode;
+
+  if (!itemId || !coupleCode) {
+    alert('아이템 번호와 연인 코드가 필요합니다.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/itemReport/${coupleCode}/${itemId}`, {
+      credentials: 'include'
+    });
+    const out = document.getElementById('itemReportResult');
+
+    if (res.ok) {
+      const data = await res.json();
+      out.innerText = JSON.stringify(data, null, 2);
+    } else {
+      const err = await res.text();
+      out.innerText = '❌ 조회 실패: ' + err;
+    }
+  } catch (err) {
+    console.error('아이템 리포트 조회 오류:', err);
+    document.getElementById('itemReportResult').innerText = '서버 오류';
+  }
+}
+
+// ====================== 파이널 리포트 조회 ======================
+async function loadFinalReport() {
+  if (!loggedInUserId) {
+    alert('로그인 후 조회 가능합니다.');
+    return;
+  }
+
+  const coupleCode = document.getElementById('coupleCodeResult').dataset.coupleCode;
+
+  if (!coupleCode) {
+    alert('연인 코드가 필요합니다.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/finalReport/${coupleCode}`, {
+      credentials: 'include'
+    });
+    const out = document.getElementById('finalReportResult');
+
+    if (res.ok) {
+      const data = await res.json();
+      out.innerText = JSON.stringify(data, null, 2);
+    } else {
+      const err = await res.text();
+      out.innerText = '❌ 조회 실패: ' + err;
+    }
+  } catch (err) {
+    console.error('파이널 리포트 조회 오류:', err);
+    document.getElementById('finalReportResult').innerText = '서버 오류';
   }
 }

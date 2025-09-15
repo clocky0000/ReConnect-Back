@@ -24,6 +24,12 @@ public class DiaryService {
             throw new IllegalStateException("연인이 연결되어 있어야 일기를 작성할 수 있습니다.");
         }
 
+        // 이미 작성된 일기 체크
+        boolean exists = diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(userId, coupleCode, questionNumber).isPresent();
+        if (exists) {
+            throw new IllegalStateException("이미 작성된 일기입니다.");
+        }
+
         if (questionNumber > 1) {
             int prevQuestionNumber = questionNumber - 1;
 
