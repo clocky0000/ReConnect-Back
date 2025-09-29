@@ -4,63 +4,89 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class FinalReportDto {
+    private JsonNode meta;
+    private JsonNode header;
+
+    @JsonProperty("final_profiles")
+    private JsonNode finalProfiles;
+
+    @JsonProperty("delta_vs_baseline")
+    private JsonNode deltaVsBaseline;
+
+    private JsonNode plot;
     private JsonNode summary;
 
-    @JsonProperty("time_series")
-    private JsonNode timeSeries;
+    @JsonProperty("final_interpretation")
+    private JsonNode finalInterpretation;
 
-    private JsonNode profiles;
+    @JsonProperty("final_strengths")
+    private JsonNode finalStrengths;
 
-    @JsonProperty("final_combination")
-    private JsonNode finalCombination;
+    @JsonProperty("final_issues")
+    private JsonNode finalIssues;
 
     private JsonNode recommendations;
-    private JsonNode audit;
-    private JsonNode appendix;
-    private JsonNode lineage;
+
+    @JsonProperty("time_series_summary")
+    private JsonNode TimeSeriesSummary;
 
     public FinalReportDto() {}
 
     // Getters and Setters
-    public FinalReportDto(JsonNode summary,
-                          JsonNode timeSeries,
-                          JsonNode profiles,
-                          JsonNode finalCombination,
+    public FinalReportDto(JsonNode meta,
+                          JsonNode header,
+                          JsonNode finalProfiles,
+                          JsonNode deltaVsBaseline,
+                          JsonNode plot,
+                          JsonNode summary,
+                          JsonNode finalInterpretation,
+                          JsonNode finalStrengths,
+                          JsonNode finalIssues,
                           JsonNode recommendations,
-                          JsonNode audit,
-                          JsonNode appendix,
-                          JsonNode lineage) {
+                          JsonNode timeSeriesSummary) {
+        this.meta = meta;
+        this.header = header;
+        this.finalProfiles = finalProfiles;
+        this.deltaVsBaseline = deltaVsBaseline;
+        this.plot = plot;
         this.summary = summary;
-        this.timeSeries = timeSeries;
-        this.profiles = profiles;
-        this.finalCombination = finalCombination;
+        this.finalInterpretation = finalInterpretation;
+        this.finalStrengths = finalStrengths;
+        this.finalIssues = finalIssues;
         this.recommendations = recommendations;
-        this.audit = audit;
-        this.appendix = appendix;
-        this.lineage = lineage;
+        this.TimeSeriesSummary = timeSeriesSummary;
     }
+
+    public JsonNode getMeta() { return meta; }
+    public void setMeta(JsonNode meta) { this.meta = meta; }
+
+    public JsonNode getHeader() { return header; }
+    public void setHeader(JsonNode header) { this.header = header; }
+
+    public JsonNode getFinalProfiles() { return finalProfiles; }
+    public void setFinalProfiles(JsonNode finalProfiles) { this.finalProfiles = finalProfiles; }
+
+    public JsonNode getDeltaVsBaseline() { return deltaVsBaseline; }
+    public void setDeltaVsBaseline(JsonNode deltaVsBaseline) { this.deltaVsBaseline = deltaVsBaseline; }
+
+    public JsonNode getPlot() { return plot; }
+    public void setPlot(JsonNode plot) { this.plot = plot; }
 
     public JsonNode getSummary() { return summary; }
     public void setSummary(JsonNode summary) { this.summary = summary; }
 
-    public JsonNode getTimeSeries() { return timeSeries; }
-    public void setTimeSeries(JsonNode timeSeries) { this.timeSeries = timeSeries; }
+    public JsonNode getFinalInterpretation() { return finalInterpretation; }
+    public void setFinalInterpretation(JsonNode finalInterpretation) { this.finalInterpretation = finalInterpretation; }
 
-    public JsonNode getProfiles() { return profiles; }
-    public void setProfiles(JsonNode profiles) { this.profiles = profiles; }
+    public JsonNode getFinalStrengths() { return finalStrengths; }
+    public void setFinalStrengths(JsonNode finalStrengths) { this.finalStrengths = finalStrengths; }
 
-    public JsonNode getFinalCombination() { return finalCombination; }
-    public void setFinalCombination(JsonNode finalCombination) { this.finalCombination = finalCombination; }
+    public JsonNode getFinalIssues() { return finalIssues; }
+    public void setFinalIssues(JsonNode finalIssues) { this.finalIssues = finalIssues; }
 
     public JsonNode getRecommendations() { return recommendations; }
     public void setRecommendations(JsonNode recommendations) { this.recommendations = recommendations; }
 
-    public JsonNode getAudit() { return audit; }
-    public void setAudit(JsonNode audit) { this.audit = audit; }
-
-    public JsonNode getAppendix() { return appendix; }
-    public void setAppendix(JsonNode appendix) { this.appendix = appendix; }
-
-    public JsonNode getLineage() { return lineage; }
-    public void setLineage(JsonNode lineage) { this.lineage = lineage; }
+    public JsonNode getTimeSeriesSummary() { return TimeSeriesSummary; }
+    public void setTimeSeriesSummary(JsonNode timeSeriesSummary) { this.TimeSeriesSummary = timeSeriesSummary; }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -19,21 +20,44 @@ public class FinalReport {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
+    private JsonNode meta;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private JsonNode header;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    @JsonProperty("final_profiles")
+    private JsonNode finalProfiles;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    @JsonProperty("delta_vs_baseline")
+    private JsonNode deltaVsBaseline;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private JsonNode plot;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
     private JsonNode summary;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    @JsonProperty("time_series")
-    private JsonNode timeSeries;
+    @JsonProperty("final_interpretation")
+    private JsonNode finalInterpretation;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    private JsonNode profiles;
+    @JsonProperty("final_strengths")
+    private JsonNode finalStrengths;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    @JsonProperty("final_combination")
-    private JsonNode finalCombination;
+    @JsonProperty("final_issues")
+    private JsonNode finalIssues;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
@@ -41,15 +65,9 @@ public class FinalReport {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    private JsonNode audit;
+    @JsonProperty("time_series_summary")
+    private JsonNode timeSeriesSummary;
 
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode appendix;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode lineage;
 
     public FinalReport() {}
 
@@ -60,27 +78,36 @@ public class FinalReport {
     public String getCoupleCode() { return coupleCode; }
     public void setCoupleCode(String coupleCode) { this.coupleCode = coupleCode; }
 
+    public JsonNode getMeta() { return meta; }
+    public void setMeta(JsonNode meta) { this.meta = meta; }
+
+    public JsonNode getHeader() { return header; }
+    public void setHeader(JsonNode header) { this.header = header; }
+
+    public JsonNode getFinalProfiles() { return finalProfiles; }
+    public void setFinalProfiles(JsonNode finalProfiles) { this.finalProfiles = finalProfiles; }
+
+    public JsonNode getDeltaVsBaseline() { return deltaVsBaseline; }
+    public void setDeltaVsBaseline(JsonNode deltaVsBaseline) { this.deltaVsBaseline = deltaVsBaseline; }
+
+    public JsonNode getPlot() { return plot; }
+    public void setPlot(JsonNode plot) { this.plot = plot; }
+
     public JsonNode getSummary() { return summary; }
     public void setSummary(JsonNode summary) { this.summary = summary; }
 
-    public JsonNode getTimeSeries() { return timeSeries; }
-    public void setTimeSeries(JsonNode timeSeries) { this.timeSeries = timeSeries; }
+    public JsonNode getFinalInterpretation() { return finalInterpretation; }
+    public void setFinalInterpretation(JsonNode finalInterpretation) { this.finalInterpretation = finalInterpretation; }
 
-    public JsonNode getProfiles() { return profiles; }
-    public void setProfiles(JsonNode profiles) { this.profiles = profiles; }
+    public JsonNode getFinalStrengths() { return finalStrengths; }
+    public void setFinalStrengths(JsonNode finalStrengths) { this.finalStrengths = finalStrengths; }
 
-    public JsonNode getFinalCombination() { return finalCombination; }
-    public void setFinalCombination(JsonNode finalCombination) { this.finalCombination = finalCombination; }
+    public JsonNode getFinalIssues() { return finalIssues; }
+    public void setFinalIssues(JsonNode finalIssues) { this.finalIssues = finalIssues; }
 
     public JsonNode getRecommendations() { return recommendations; }
     public void setRecommendations(JsonNode recommendations) { this.recommendations = recommendations; }
 
-    public JsonNode getAudit() { return audit; }
-    public void setAudit(JsonNode audit) { this.audit = audit; }
-
-    public JsonNode getAppendix() { return appendix; }
-    public void setAppendix(JsonNode appendix) { this.appendix = appendix; }
-
-    public JsonNode getLineage() { return lineage; }
-    public void setLineage(JsonNode lineage) { this.lineage = lineage; }
+    public JsonNode getTimeSeriesSummary() { return timeSeriesSummary; }
+    public void setTimeSeriesSummary(JsonNode timeSeriesSummary) { this.timeSeriesSummary = timeSeriesSummary; }
 }
