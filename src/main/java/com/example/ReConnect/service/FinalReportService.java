@@ -18,14 +18,17 @@ public class FinalReportService {
         FinalReport finalReport = new FinalReport();
 
         finalReport.setCoupleCode(coupleCode);
+        finalReport.setMeta(dto.getMeta());
+        finalReport.setHeader(dto.getHeader());
+        finalReport.setFinalProfiles(dto.getFinalProfiles());
+        finalReport.setDeltaVsBaseline(dto.getDeltaVsBaseline());
+        finalReport.setPlot(dto.getPlot());
         finalReport.setSummary(dto.getSummary());
-        finalReport.setTimeSeries(dto.getTimeSeries());
-        finalReport.setProfiles(dto.getProfiles());
-        finalReport.setFinalCombination(dto.getFinalCombination());
+        finalReport.setFinalInterpretation(dto.getFinalInterpretation());
+        finalReport.setFinalStrengths(dto.getFinalStrengths());
+        finalReport.setFinalIssues(dto.getFinalIssues());
         finalReport.setRecommendations(dto.getRecommendations());
-        finalReport.setAudit(dto.getAudit());
-        finalReport.setAppendix(dto.getAppendix());
-        finalReport.setLineage(dto.getLineage());
+        finalReport.setTimeSeriesSummary(dto.getTimeSeriesSummary());
 
         finalReportRepository.save(finalReport);
     }
@@ -36,13 +39,16 @@ public class FinalReportService {
 
         return new FinalReportDto(
                 finalReport.getSummary(),
-                finalReport.getTimeSeries(),
-                finalReport.getProfiles(),
-                finalReport.getFinalCombination(),
+                finalReport.getMeta(),
+                finalReport.getHeader(),
+                finalReport.getDeltaVsBaseline(),
+                finalReport.getPlot(),
+                finalReport.getSummary(),
+                finalReport.getFinalInterpretation(),
+                finalReport.getFinalStrengths(),
+                finalReport.getFinalIssues(),
                 finalReport.getRecommendations(),
-                finalReport.getAudit(),
-                finalReport.getAppendix(),
-                finalReport.getLineage()
+                finalReport.getTimeSeriesSummary()
         );
     }
 }

@@ -28,10 +28,9 @@ public class ItemReportController {
 
         String coupleCode = userService.findById(userId).getCoupleCode();
         Integer itemId = dto.getItemId();
-        String idempotencyKey = dto.getIdempotencyKey();
 
         try {
-            itemReportService.saveItemReport(dto, coupleCode, itemId, idempotencyKey);
+            itemReportService.saveItemReport(dto, coupleCode, itemId);
             return ResponseEntity.ok("제출 완료");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

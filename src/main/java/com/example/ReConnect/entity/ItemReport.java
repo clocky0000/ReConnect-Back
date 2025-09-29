@@ -21,16 +21,26 @@ public class ItemReport {
     @Column(name = "item_id", nullable = false)
     private Integer itemId;
 
-    @Column(name = "idempotency_key", nullable = false, columnDefinition = "TEXT", unique = true)
-    private String idempotencyKey;
-
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private JsonNode meta;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    private JsonNode question;
+    private JsonNode header;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    @JsonProperty("labels_now")
+    private JsonNode labelsNow;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private JsonNode metrics;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private JsonNode plot;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
@@ -38,28 +48,7 @@ public class ItemReport {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    @JsonProperty("couple_profile")
-    private JsonNode coupleProfile;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode charts;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode strengths;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode issues;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode advice;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode audit;
+    private JsonNode interpretation;
 
     public ItemReport() {}
 
@@ -73,33 +62,24 @@ public class ItemReport {
     public Integer getItemId() { return itemId; }
     public void setItemId(Integer itemId) { this.itemId = itemId; }
 
-    public String getIdempotencyKey() { return idempotencyKey; }
-    public void setIdempotencyKey(String idempotencyKey) { this.idempotencyKey = idempotencyKey; }
-
     public JsonNode getMeta() { return meta; }
     public void setMeta(JsonNode meta) { this.meta = meta; }
 
-    public JsonNode getQuestion() { return question; }
-    public void setQuestion(JsonNode question) { this.question = question; }
+    public JsonNode getHeader() { return header; }
+    public void setHeader(JsonNode header) { this.header = header; }
+
+    public JsonNode getLabelsNow() { return labelsNow; }
+    public void setLabelsNow(JsonNode labelsNow) { this.labelsNow = labelsNow; }
+
+    public JsonNode getMetrics() { return metrics; }
+    public void setMetrics(JsonNode metrics) { this.metrics = metrics; }
+
+    public JsonNode getPlot() { return plot; }
+    public void setPlot(JsonNode plot) { this.plot = plot; }
 
     public JsonNode getPartners() { return partners; }
     public void setPartners(JsonNode partners) { this.partners = partners; }
 
-    public JsonNode getCoupleProfile() { return coupleProfile; }
-    public void setCoupleProfile(JsonNode coupleProfile) { this.coupleProfile = coupleProfile; }
-
-    public JsonNode getCharts() { return charts; }
-    public void setCharts(JsonNode charts) { this.charts = charts; }
-
-    public JsonNode getStrengths() { return strengths; }
-    public void setStrengths(JsonNode strengths) { this.strengths = strengths; }
-
-    public JsonNode getIssues() { return issues; }
-    public void setIssues(JsonNode issues) { this.issues = issues; }
-
-    public JsonNode getAdvice() { return advice; }
-    public void setAdvice(JsonNode advice) { this.advice = advice; }
-
-    public JsonNode getAudit() { return audit; }
-    public void setAudit(JsonNode audit) { this.audit = audit; }
+    public JsonNode getInterpretation() { return interpretation; }
+    public void setInterpretation(JsonNode interpretation) { this.interpretation = interpretation; }
 }

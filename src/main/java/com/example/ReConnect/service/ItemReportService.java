@@ -14,51 +14,44 @@ public class ItemReportService {
         this.itemReportRepository = itemReportRepository;
     }
 
-    public ItemReportDto saveItemReport(ItemReportDto dto, String coupleCode, Integer itemId, String idempotencyKey) {
+    public ItemReportDto saveItemReport(ItemReportDto dto, String coupleCode, Integer itemId) {
         // 기존 리포트 조회
-        ItemReport existingReport = itemReportRepository.findByIdempotencyKey(idempotencyKey)
+        ItemReport existingReport = itemReportRepository.findByCoupleCodeAndItemId(coupleCode, itemId)
                 .orElse(null);
 
         if (existingReport != null) {
             return new ItemReportDto(
                     existingReport.getMeta(),
-                    existingReport.getQuestion(),
+                    existingReport.getHeader(),
+                    existingReport.getLabelsNow(),
+                    existingReport.getMetrics(),
+                    existingReport.getPlot(),
                     existingReport.getPartners(),
-                    existingReport.getCoupleProfile(),
-                    existingReport.getCharts(),
-                    existingReport.getStrengths(),
-                    existingReport.getIssues(),
-                    existingReport.getAdvice(),
-                    existingReport.getAudit()
+                    existingReport.getInterpretation()
             );
         }
 
         ItemReport itemReport = new ItemReport();
         itemReport.setCoupleCode(coupleCode);
         itemReport.setItemId(itemId);
-        itemReport.setIdempotencyKey(idempotencyKey);
         itemReport.setMeta(dto.getMeta());
-        itemReport.setQuestion(dto.getQuestion());
+        itemReport.setHeader(dto.getHeader());
+        itemReport.setLabelsNow(dto.getLabelsNow());
+        itemReport.setMetrics(dto.getMetrics());
+        itemReport.setPlot(dto.getPlot());
         itemReport.setPartners(dto.getPartners());
-        itemReport.setCoupleProfile(dto.getCoupleProfile());
-        itemReport.setCharts(dto.getCharts());
-        itemReport.setStrengths(dto.getStrengths());
-        itemReport.setIssues(dto.getIssues());
-        itemReport.setAdvice(dto.getAdvice());
-        itemReport.setAudit(dto.getAudit());
+        itemReport.setInterpretation(dto.getInterpretations());
 
         itemReportRepository.save(itemReport);
 
         return new ItemReportDto(
                 itemReport.getMeta(),
-                itemReport.getQuestion(),
+                itemReport.getHeader(),
+                itemReport.getLabelsNow(),
+                itemReport.getMetrics(),
+                itemReport.getPlot(),
                 itemReport.getPartners(),
-                itemReport.getCoupleProfile(),
-                itemReport.getCharts(),
-                itemReport.getStrengths(),
-                itemReport.getIssues(),
-                itemReport.getAdvice(),
-                itemReport.getAudit()
+                itemReport.getInterpretation()
         );
     }
 
@@ -68,14 +61,12 @@ public class ItemReportService {
 
         return new ItemReportDto(
                 itemReport.getMeta(),
-                itemReport.getQuestion(),
+                itemReport.getHeader(),
+                itemReport.getLabelsNow(),
+                itemReport.getMetrics(),
+                itemReport.getPlot(),
                 itemReport.getPartners(),
-                itemReport.getCoupleProfile(),
-                itemReport.getCharts(),
-                itemReport.getStrengths(),
-                itemReport.getIssues(),
-                itemReport.getAdvice(),
-                itemReport.getAudit()
+                itemReport.getInterpretation()
         );
     }
 }
