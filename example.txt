@@ -39,124 +39,630 @@
 
 ## 아이템 리포트 저장하기
 {
-    "item_id": 1,
-    "idempotency_key": "sha256...",
+    "item_id": 36
     "meta": {
         "schema_version": "1.0.0",
-        "engine_id": "ecrr-llmscore-v2.3.1",
-        "cohort_version": "ecrr-cohort-2025q3-k=10k",
-        "item_id": 5,
-        "idempotency_key": "sha256:...",
-        "created_at": "2025-09-12T03:20:00Z"
+        "created_at": "2025-09-28T11:18:02+09:00",
+        "engine_id": "ir_report_llm"
     },
-    "question": {
-        "text": "I worry about being abandoned.",
-        "dimension": "anxiety",
-        "is_reverse": false
+    "header": {
+        "title": "오늘의 질문",
+        "current_item": {
+            "item_id": 36,
+            "dimension": "anxiety",
+            "question_text": "연인이 나와 떨어져 있는 시간을 보내면 불만을 느낀다."
+        }
+    },
+    "labels_now": {
+        "A": "Secure",
+        "B": "Avoidant",
+        "pair_detailed": "Secure-Avoidant",
+        "pair_cluster": "Mixed"
+    },
+    "metrics": {
+        "anxiety": {
+            "A": {
+                "now": 3.1,
+                "prev": 3.1,
+                "delta_vs_prev": 0.0
+            },
+            "B": {
+                "now": 3.15,
+                "prev": 3.16,
+                "delta_vs_prev": -0.01
+            }
+        },
+        "avoidance": {
+            "A": {
+                "now": 3.52,
+                "prev": 3.6,
+                "delta_vs_prev": -0.08
+            },
+            "B": {
+                "now": 3.98,
+                "prev": 4.14,
+                "delta_vs_prev": -0.16
+            }
+        }
+    },
+    "plot": {
+        "now": {
+            "A": {
+                "x": -0.18,
+                "y": -0.75,
+                "raw": {
+                    "anxiety": 3.1,
+                    "avoidance": 3.52
+               }
+            },
+            "B": {
+                "x": 0.28,
+                "y": -0.7,
+                "raw": {
+                    "anxiety": 3.15,
+                    "avoidance": 3.98
+                }
+            }
+        },
+        "prev": {
+            "A": {
+                "x": -0.1,
+                "y": -0.75,
+                "raw": {
+                    "anxiety": 3.1,
+                    "avoidance": 3.6
+                }
+            },
+            "B": {
+                "x": 0.44,
+                "y": -0.69,
+                "raw": {
+                    "anxiety": 3.16,
+                    "avoidance": 4.14
+                }
+            }
+        },
+        "axes": {
+            "x_label": "회피→",
+            "y_label": "불안↑"
+        }
     },
     "partners": {
         "A": {
-            "raw_answers": { "text": "I often fear my partner will leave when we fight." },
-            "nlp": { "length": 64, "negation_rate": 0.00, "toxicity": 0.02, "reliability": 0.82 },
-            "scores": {
-                "pred_raw": 6.3,
-                "calibrated": 6.1,
-                "smoothed": 4.12,
-                "blend": 4.79,
-                "survey_mean_dim": 3.9
-            },
-            "quality": {
-                "data_quality_flags": ["ok"],
-                "weight_factor": 1.0
-            },
-            "state_next": { "S_anxiety": 4.12, "S_avoidance": 3.51 },
-            "label": "Anxious",
-            "distribution_pct": { "Secure": 12.0, "Anxious": 63.0, "Avoidant": 8.0, "Disorganized": 17.0 },
-            "uncertainty": { "near_boundary": false, "epsilon": 0.10 }
+            "label": "Secure",
+            "distribution_pct": {
+                "Secure": 45.0,
+                "Anxious": 25.0,
+                "Avoidant": 20.0,
+                "Disorganized": 10.0
+            }
         },
         "B": {
-            "raw_answers": { "text": "Not really; I feel stable in our bond." },
-            "nlp": { "length": 38, "negation_rate": 0.12, "toxicity": 0.00, "reliability": 0.76 },
-            "scores": {
-                "pred_raw": 2.2,
-                "calibrated": 2.5,
-                "smoothed": 3.12,
-                "blend": 3.54,
-                "survey_mean_dim": 3.8
+            "label": "Avoidant",
+            "distribution_pct": {
+                "Secure": 50.0,
+                "Anxious": 20.0,
+                "Avoidant": 15.0,
+                "Disorganized": 15.0
+            }
+        },
+        "recommendation": {
+            "top1": {
+                "item_id": 5,
+                "advice_comment": "감사 일기: 오늘 고마웠던 3가지를 적어보세요.",
+                "reason": "A/B 애착·피드백 통합 + ItemCF",
+                "neighbors": [
+                    {
+                        "item_id": 2,
+                        "sim": 0.78
+                    }
+                ]
             },
-            "quality": {
-                "data_quality_flags": ["ok"],
-                "weight_factor": 1.0
-            },
-            "state_next": { "S_anxiety": 3.12, "S_avoidance": 3.60 },
-            "label": "Secure",
-            "distribution_pct": { "Secure": 61.0, "Anxious": 9.0, "Avoidant": 17.0, "Disorganized": 13.0 },
-            "uncertainty": { "near_boundary": true, "epsilon": 0.10 }
+            "generated_by": "ItemCF + feedback + attachment bias"
         }
     },
-    "couple_profile": {
-        "anxiety": { "A": 4.79, "B": 3.54 },
-        "avoidance": { "A": 3.51, "B": 3.60 },
-        "quadrant": "A:Anxious, B:Secure"
-    },
-    "charts": {
-        "sparklines": { "A": [3.9,4.1,4.0,4.3,4.8], "B": [3.8,3.6,3.5,3.5,3.5] }
-    },
-    "strengths": ["B expresses stable bond."],
-    "issues": ["A shows elevated abandonment fear."],
-    "advice": ["Use secure-base language and pre-commitment rituals."],
-    "audit": {
-        "ir_hash": "sha256:...",
-        "latency_ms": 812,
-        "cost_usd": 0.0042,
-        "request_id": "req_7f2...",
-        "nlp_hash": "sha256:...",
-        "pii_masked": true
+    "interpretation": {
+        "one_liner": "연인과의 거리에서 불만을 느끼는 것은 서로의 애착 스타일 차이에서 기인할 수 있습니다.",
+        "strengths": [
+            "서로의 감정을 이해하려는 노력"
+        ],
+        "issues": [
+            "거리에서 오는 불안감과 회피 경향의 불일치"
+        ],
+        "advice": [
+            "[오늘의 추천] #5: 감사 일기: 오늘 고마웠던 3가지를 적어보세요. (이유: A/B 애착·피드백 통합 + ItemCF)"
+        ]
     }
 }
 
 ## 파이널 리포트 저장하기
 {
-    "summary": {
-        "meta": {
-            "schema_version": "1.0.0",
-            "engine_id": "ecrr-llmscore-v2.3.1",
-            "cohort_version": "ecrr-cohort-2025q3-k=10k",
-            "created_at": "2025-09-12T03:50:00Z"
-        },
-        "couple_id": "cpl_abc123",
-        "hard_labels": { "A": "Anxious", "B": "Secure", "couple": "Mixed" },
-        "distribution_pct": {
-            "A": { "Secure": 18.0, "Anxious": 57.0, "Avoidant": 9.0, "Disorganized": 16.0 },
-            "B": { "Secure": 63.0, "Anxious": 10.0, "Avoidant": 15.0, "Disorganized": 12.0 }
+    "meta": {
+        "schema_version": "1.0.0",
+        "created_at": "2025-09-28T11:18:02+09:00",
+        "engine_id": "fr_report_llm"
+    },
+    "header": {
+        "title": "최종 개요",
+        "labels": {
+            "A": "Secure",
+            "B": "Avoidant",
+            "pair_detailed": "Secure-Avoidant",
+            "pair_cluster": "Mixed"
         }
     },
-    "time_series": {
-        "items": [
-            { "item_id": 1, "A": { "blend": 4.2 }, "B": { "blend": 3.5 } },
-            { "item_id": 2, "A": { "blend": 4.6 }, "B": { "blend": 3.6 } }
+    "final_profiles": {
+        "A": {
+            "anxiety": 3.1,
+            "avoidance": 3.52
+        },
+        "B": {
+            "anxiety": 3.15,
+            "avoidance": 3.98
+        }
+    },
+    "delta_vs_baseline": {
+        "A": {
+            "anxiety": -1.0,
+            "avoidance": -0.08
+        },
+        "B": {
+            "anxiety": -0.05,
+            "avoidance": -0.22
+        }
+    },
+    "plot": {
+        "now": {
+            "A": {
+                "x": -0.18,
+                "y": -0.75,
+                "raw": {
+                    "anxiety": 3.1,
+                    "avoidance": 3.52
+                }
+            },
+            "B": {
+                "x": 0.28,
+                "y": -0.7,
+                "raw": {
+                    "anxiety": 3.15,
+                    "avoidance": 3.98
+                }
+            }
+        },
+        "axes": {
+            "x_label": "회피→",
+            "y_label": "불안↑"
+        }
+    },
+    "summary": {
+        "hard_labels": {
+            "A": "Secure",
+            "B": "Avoidant",
+            "couple_pair": "Secure-Avoidant"
+        }
+    },
+    "final_interpretation": "A는 안정적인 애착 스타일을 가지고 있으며, B는 회피적인 경향이 있습니다. 이 조합은 서로의 정서적 요구를 이해하는 데 어려움이 있을 수 있습니다.",
+    "final_strengths": [
+        "A의 안정감이 B에게 긍정적인 영향을 미침",
+        "서로의 차이를 인식하고 존중할 수 있는 가능성"
+    ],
+    "final_issues": [
+        "B의 회피적 반응이 A의 정서적 요구를 충족하지 못함",
+        "정서적 연결의 부족으로 인한 갈등 가능성"
+    ],
+    "recommendations": {
+        "communication": [
+            "커플 공통 실천: #5 — 감사 일기: 오늘 고마웠던 3가지를 적어보세요. (근거: A/B 애착·피드백 통합 + ItemCF)",
+            "A의 감정을 표현할 때 B가 경청하도록 유도"
+        ],
+        "behavioral": [
+            "A 맞춤: #5 — 감사 일기: 오늘 고마웠던 3가지를 적어보세요.",
+            "B 맞춤: #2 — 오늘 걱정거리 3가지를 종이에 쓰고 현실성 점수를 매겨요."
+        ],
+        "scripts": [
+            {
+                "situation": "오늘의 실천 합의",
+                "script": "우리 오늘은 #5을(를) 같이 해보자. 난 '감사 일기: 오늘 고마웠던 3가지를 적어보세요.'가 지금 필요해 보여. 10분만 투자해볼까?"
+            }
         ]
     },
-    "profiles": {
-        "A": { "anxiety": 4.72, "avoidance": 3.58, "quadrant": "Anxious" },
-        "B": { "anxiety": 3.41, "avoidance": 3.69, "quadrant": "Secure" },
-        "couple": { "pattern": "Anxious–Secure", "dissimilarity": 0.89 }
-    },
-    "final_combination": {
-        "rule": "quadrant_by_medians",
-        "cohort_medians": { "anxiety": 3.85, "avoidance": 3.70 },
-        "uncertainty": { "A": false, "B": true, "epsilon": 0.10 }
-    },
-    "recommendations": {
-        "communication": ["Mirroring & labeling feelings", "Scheduled reassurance"],
-        "behavioral": ["Weekly attachment check-in ritual"],
-        "scripts": [{ "situation": "post-conflict", "script": "I care about us and I'm here..." }]
-    },
-    "appendix": {
-        "xai": { "top_features": ["negation_rate", "emotion_valence", "attachment_lexicon_hits"] }
-    },
-    "lineage": {
-        "ir_hashes": ["sha256:...item1", "sha256:...item2", "..."],
-        "fr_hash": "sha256:...final"
-    }
+    "time_series_summary": [
+        {
+            "item_id": 1,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.25
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.43
+            }
+        },
+        {
+            "item_id": 2,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.41
+            }
+        },
+        {
+            "item_id": 3,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.25
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.43
+            }
+        },
+        {
+            "item_id": 4,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.44
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.37
+            }
+        },
+        {
+            "item_id": 5,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.25
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.43
+            }
+        },
+        {
+            "item_id": 6,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.44
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.33
+            }
+        },
+        {
+            "item_id": 7,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.25
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.43
+            }
+        },
+        {
+            "item_id": 8,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.43
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.34
+            }
+        },
+        {
+            "item_id": 9,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.25
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.47
+            }
+        },
+        {
+            "item_id": 10,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.43
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.31
+            }
+        },
+        {
+            "item_id": 11,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.25
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.47
+            }
+        },
+        {
+            "item_id": 12,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.42
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.28
+            }
+        },
+        {
+            "item_id": 13,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.23
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.65
+            }
+        },
+        {
+            "item_id": 14,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.42
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.26
+            }
+        },
+        {
+            "item_id": 15,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.23
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.62
+            }
+        },
+        {
+            "item_id": 16,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.42
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.24
+            }
+        },
+        {
+            "item_id": 17,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.42
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.78
+            }
+        },
+        {
+            "item_id": 18,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.46
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.27
+            }
+        },
+        {
+            "item_id": 19,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.73
+            }
+        },
+        {
+            "item_id": 20,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.49
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.25
+            }
+        },
+        {
+            "item_id": 21,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.38
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.68
+            }
+        },
+        {
+            "item_id": 22,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.16
+            }
+        },
+        {
+            "item_id": 23,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.28
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.83
+            }
+        },
+        {
+            "item_id": 24,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.15
+            }
+        },
+        {
+            "item_id": 25,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.31
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.96
+            }
+        },
+        {
+            "item_id": 26,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.15
+            }
+        },
+        {
+            "item_id": 27,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.49
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 4.07
+            }
+        },
+        {
+            "item_id": 28,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.15
+            }
+        },
+        {
+            "item_id": 29,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.43
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 3.95
+            }
+        },
+        {
+            "item_id": 30,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.14
+            }
+        },
+        {
+            "item_id": 31,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.44
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 4.06
+            }
+        },
+        {
+            "item_id": 32,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.18
+            }
+        },
+        {
+            "item_id": 33,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.6
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 4.16
+            }
+        },
+        {
+            "item_id": 34,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.18
+            }
+        },
+        {
+            "item_id": 35,
+            "A": {
+                "survey_score": 3.6,
+                "blend": 3.55
+            },
+            "B": {
+                "survey_score": 4.2,
+                "blend": 4.05
+            }
+        },
+        {
+            "item_id": 36,
+            "A": {
+                "survey_score": 4.1,
+                "blend": 3.4
+            },
+            "B": {
+                "survey_score": 3.2,
+                "blend": 3.17
+            }
+        }
+    ]
 }
