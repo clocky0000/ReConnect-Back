@@ -1,7 +1,5 @@
 package com.example.ReConnect.dto;
 
-import java.time.LocalDate;
-
 public class DiaryRequestDto {
 
     private String userId;
