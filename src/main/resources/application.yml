@@ -20,3 +20,7 @@ spring:
 app:
   crypto:
     key-base64: ${APP_ENC_KEY}
+
+  seed:
+    enabled: true
+    refer-json: classpath:refer.json
