@@ -98,6 +98,32 @@
 <button onclick="loadFinalReport()">조회</button>
 <pre id="finalReportResult" style="white-space: pre-wrap; background-color: #e0f7fa; padding: 10px;"></pre>
 
+<hr/>
+<h2>📑 최근 보고서 & 진행상황</h2>
+<button onclick="fetchLastReportAndProgress()">불러오기</button>
+
+<p>마지막 보고서 번호: <b id="lastReportNo">-</b></p>
+<p>둘 다 작성 완료한 마지막 질문: <b id="lastDoneQ">-</b></p>
+<p>다음 질문 번호: <b id="nextQ">-</b></p>
+
+<div id="reportList" style="margin-top:8px;"></div>
+
+<style>
+    /* 작은 버튼 스타일 */
+    .btn {
+      display:inline-block;
+      margin:4px;
+      padding:6px 10px;
+      border:1px solid #ddd;
+      border-radius:6px;
+      text-decoration:none;
+      color:#333;
+      background:#fafafa;
+      cursor:pointer;
+    }
+    .btn:hover { background:#f2f2f2; }
+</style>
+
 <script src="script.js"></script>
 </body>
 </html>
