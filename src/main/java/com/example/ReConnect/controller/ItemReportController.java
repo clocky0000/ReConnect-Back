@@ -49,4 +49,12 @@ public class ItemReportController {
 
         return ResponseEntity.ok(dto);
     }
+
+    //
+    @GetMapping("/last-item/{coupleCode}")
+    public int lastReportItem(@PathVariable String coupleCode) {
+        return itemReportService.getLastReportItemId(coupleCode);
+    }
+
+
 }

@@ -14,6 +14,11 @@ public class ItemReportService {
         this.itemReportRepository = itemReportRepository;
     }
 
+    //
+    public int getLastReportItemId(String coupleCode) {
+        return itemReportRepository.findLastReportItemId(coupleCode);
+    }
+
     public ItemReportDto saveItemReport(ItemReportDto dto, String coupleCode, Integer itemId) {
         // 기존 리포트 조회
         ItemReport existingReport = itemReportRepository.findByCoupleCodeAndItemId(coupleCode, itemId)
@@ -69,4 +74,6 @@ public class ItemReportService {
                 itemReport.getInterpretation()
         );
     }
+
+
 }

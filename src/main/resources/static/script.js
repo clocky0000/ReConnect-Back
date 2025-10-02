@@ -480,3 +480,71 @@ async function loadFinalReport() {
     document.getElementById('finalReportResult').innerText = '서버 오류';
   }
 }
+
+// ====================== 최근 보고서 / 진행상황 불러오기 ======================
+async function fetchLastReportAndProgress() {
+  if (!loggedInUserId) {
+    alert('로그인 후 이용해주세요.');
+    return;
+  }
+
+  const coupleEl = document.getElementById('coupleCodeResult');
+  const coupleCode = coupleEl?.dataset?.coupleCode;
+  if (!coupleCode) {
+    alert('연인 코드가 없습니다. 먼저 발급/연결해주세요.');
+    return;
+  }
+
+  // 1) 마지막 보고서 번호
+  let lastReport = 0;
+  try {
+    const res = await fetch(`/api/itemReport/last-item/${coupleCode}`, { credentials: 'include' });
+    if (res.ok) {
+      const txt = await res.text(); // 정수 문자열
+      lastReport = parseInt(txt, 10) || 0;
+    } else {
+      console.warn('last-item API 실패', await res.text());
+    }
+  } catch (e) {
+    console.error('last-item 호출 오류', e);
+  }
+  document.getElementById('lastReportNo').textContent = lastReport;
+
+  // 1-1) 1..N 보고서 버튼 만들기
+  const list = document.getElementById('reportList');
+  list.innerHTML = '';
+  for (let i = 1; i <= lastReport; i++) {
+    const a = document.createElement('a');
+    a.className = 'btn';
+    a.href = '#';
+    a.textContent = `보고서 ${i}`;
+    a.onclick = (ev) => { ev.preventDefault(); loadItemReportByNumber(i); };
+    list.appendChild(a);
+  }
+
+  // 2) 둘 다 작성 완료한 마지막 질문 번호
+  let lastCompleted = 0;
+  try {
+    const res2 = await fetch(`/api/diary/last-completed/${coupleCode}`, { credentials: 'include' });
+    if (res2.ok) {
+      const txt2 = await res2.text(); // 정수 문자열
+      lastCompleted = parseInt(txt2, 10) || 0;
+    } else {
+      console.warn('last-completed API 실패', await res2.text());
+    }
+  } catch (e) {
+    console.error('last-completed 호출 오류', e);
+  }
+  document.getElementById('lastDoneQ').textContent = lastCompleted;
+
+  // 2-1) 다음 질문 번호(최대 36로 캡)
+  const next = Math.min(36, (lastCompleted || 0) + 1);
+  document.getElementById('nextQ').textContent = next;
+}
+
+// 보고서 번호 버튼 클릭 시: 입력창에 넣고 기존 조회 함수 재사용
+function loadItemReportByNumber(n) {
+  const input = document.getElementById('itemReportNumber');
+  if (input) input.value = n;
+  loadItemReport();
+}

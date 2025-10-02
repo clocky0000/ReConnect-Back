@@ -5,6 +5,8 @@ import com.example.ReConnect.dto.UserDto;
 import com.example.ReConnect.entity.Diary;
 import com.example.ReConnect.repository.DiaryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DiaryService {
@@ -55,6 +57,20 @@ public class DiaryService {
         diary.setQuestionNumber(questionNumber);
         diary.setContent(dto.getContent());
         diaryRepository.save(diary);
+    }
+
+    public int getLastCompletedQuestion(String coupleCode) {
+        var page1 = PageRequest.of(0, 1);
+        var list = diaryRepository.findCompletedQuestionNumbers(coupleCode, page1);
+        return list.isEmpty() ? 0 : list.get(0);
+    }
+
+    /** 다음 질문 번호(최대 36로 제한). 둘 다 완료한 마지막 번호 + 1 */
+    public int getNextQuestionNumber(String coupleCode) {
+        int last = getLastCompletedQuestion(coupleCode);
+        int next = last + 1;
+        if (next > 36) next = 36;
+        return next;
     }
 
     public DiaryRequestDto getDiary(String userId, String coupleCode, Integer questionNumber) {

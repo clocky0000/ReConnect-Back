@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
@@ -74,5 +78,17 @@ public class DiaryController {
         }
 
         return ResponseEntity.ok(partnerDiary);
+    }
+
+    //마지막 질문 번호
+    @GetMapping("/last-completed/{coupleCode}")
+    public int getLastCompleted(@PathVariable String coupleCode) {
+        return diaryService.getLastCompletedQuestion(coupleCode);
+    }
+
+    // 다음 질문 번호 (최대 36)
+    @GetMapping("/next/{coupleCode}")
+    public int getNextQuestion(@PathVariable String coupleCode) {
+        return diaryService.getNextQuestionNumber(coupleCode);
     }
 }
