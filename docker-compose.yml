@@ -39,5 +39,50 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: never #이원석 수정
 
+  llm:
+    image: python:3.11-slim
+    container_name: reconnect-llm
+    working_dir: /app
+    volumes:
+      - "C:\\ECR\\ReConnect-LLM:/app"
+    env_file:
+      - "C:\\ECR\\ReConnect-LLM\\LLM.env"
+    command:
+      - sh
+      - -lc
+      - |
+        set -e
+        if [ -f requirements.txt ]; then
+          python -m pip install --no-cache-dir -r requirements.txt
+        else
+          python -m pip install --no-cache-dir python-dotenv requests numpy pandas tenacity openpyxl tqdm pydantic openai
+        fi
+        
+        mkdir -p out
+
+        if python run_llm_pipeline.py --answers data/answers_demo.json --upload-ecr; then
+          touch out/last_run.done
+          rm -f out/last_run.fail 2>/dev/null || true
+        else
+          echo 'LLM FAILED' >&2
+          rm -f out/last_run.done 2>/dev/null || true
+          touch out/last_run.fail
+        fi
+
+        tail -f /dev/null
+    healthcheck:
+      test: ["CMD-SHELL", "test -f out/last_run.done -a ! -f out/last_run.fail"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    environment:
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - PYTHONIOENCODING=UTF-8
+      - PYTHONUTF8=1
+      - RECONNECT_BASE=http://app:8080
+
 volumes:
   pgdata:
