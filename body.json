@@ -1,0 +1,14 @@
+﻿{
+    "session_id":  "sess-001",
+    "scores":  [
+                   {
+                       "item_id":  1,
+                       "pred":  0.82
+                   },
+                   {
+                       "item_id":  17,
+                       "pred":  0.41
+                   }
+               ],
+    "partner":  "A"
+}

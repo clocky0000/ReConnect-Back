@@ -1,26 +1,19 @@
-spring:
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        types:
-          json: jsonb
-    show-sql: true
-  jackson:
-    serialization:
-      indent_output: true
-
 app:
-  crypto:
-    key-base64: ${APP_ENC_KEY}
+  llm:
+    api-key: ${API_KEY_FOR_LLM:dev_key}
 
-  seed:
-    enabled: true
-    refer-json: classpath:refer.json
+spring:
+  sql:
+    init:
+      mode: never         # 이원석 수정
+      data-locations: classpath:data.sql   # 이원석 수정
+logging:
+  level: # 이원석 수정
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

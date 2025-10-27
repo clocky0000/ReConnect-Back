@@ -28,7 +28,7 @@ public class FinalReportDto {
     private JsonNode recommendations;
 
     @JsonProperty("time_series_summary")
-    private JsonNode TimeSeriesSummary;
+    private JsonNode timeSeriesSummary; //이원석 수정
 
     public FinalReportDto() {}
 
@@ -54,7 +54,7 @@ public class FinalReportDto {
         this.finalStrengths = finalStrengths;
         this.finalIssues = finalIssues;
         this.recommendations = recommendations;
-        this.TimeSeriesSummary = timeSeriesSummary;
+        this.timeSeriesSummary = timeSeriesSummary;
     }
 
     public JsonNode getMeta() { return meta; }
@@ -87,6 +87,6 @@ public class FinalReportDto {
     public JsonNode getRecommendations() { return recommendations; }
     public void setRecommendations(JsonNode recommendations) { this.recommendations = recommendations; }
 
-    public JsonNode getTimeSeriesSummary() { return TimeSeriesSummary; }
-    public void setTimeSeriesSummary(JsonNode timeSeriesSummary) { this.TimeSeriesSummary = timeSeriesSummary; }
+    public JsonNode getTimeSeriesSummary() { return timeSeriesSummary; }
+    public void setTimeSeriesSummary(JsonNode timeSeriesSummary) { this.timeSeriesSummary = timeSeriesSummary; }
 }

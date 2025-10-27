@@ -17,7 +17,7 @@ public class ItemReportDto {
     private JsonNode metrics;
     private JsonNode plot;
     private JsonNode partners;
-    private JsonNode interpretations;
+    private JsonNode interpretation;
 
     public ItemReportDto() {}
 
@@ -28,14 +28,14 @@ public class ItemReportDto {
                          JsonNode metrics,
                          JsonNode plot,
                          JsonNode partners,
-                         JsonNode interpretations) {
+                         JsonNode interpretation) { //이원석 수정 interpretations -> interpretation
         this.meta = meta;
         this.header = header;
         this.labelsNow = labelsNow;
         this.metrics = metrics;
         this.plot = plot;
         this.partners = partners;
-        this.interpretations = interpretations;
+        this.interpretation = interpretation;
     }
 
     public Integer getItemId() { return itemId; }
@@ -59,6 +59,29 @@ public class ItemReportDto {
     public JsonNode getPartners() { return partners; }
     public void setPartners(JsonNode partners) { this.partners = partners; }
 
-    public JsonNode getInterpretations() { return interpretations; }
-    public void setInterpretations(JsonNode interpretations) { this.interpretations = interpretations; }
+    // ItemReportDto.java (하단 교체)
+    public JsonNode getInterpretation() {
+        return interpretation;
+    }
+
+    public void setInterpretation(JsonNode interpretation) {
+        this.interpretation = interpretation;
+    }
+
+    /**
+     * ✅ 하위호환용 (예전 Service 코드가 호출)
+     *   - 기존 코드: dto.getInterpretations()
+     *   - 새 DTO와 호환되도록 브릿지 메서드 제공
+     */
+    @Deprecated
+    @JsonProperty("interpretations")
+    public JsonNode getInterpretations() {
+        return getInterpretation();
+    }
+
+    @Deprecated
+    public void setInterpretations(JsonNode interpretations) {
+        setInterpretation(interpretations);
+    }
+
 }

@@ -1,0 +1,22 @@
+#이원석 수정
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/ReConnect
+    username: reconnect
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+app:
+  crypto:
+    key-base64: ${APP_CRYPTO_KEY_BASE64:}

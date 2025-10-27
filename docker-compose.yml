@@ -15,7 +15,15 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   app:
-    build: .
+    env_file:
+      - environment.env     # 이원석 수정
+    volumes:
+      - ${USERPROFILE}/.m2:/root/.m2  # 이원석 수정
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MAVEN_OPTS: "-Dmaven.wagon.http.retryHandler.count=5 -Dsun.net.client.defaultConnectTimeout=120000 -Dsun.net.client.defaultReadTimeout=120000 -Dmaven.wagon.http.pool=false"
     container_name: springboot-app
     restart: always
     depends_on:
@@ -29,6 +37,7 @@ services:
       SPRING_DATASOURCE_USERNAME: reconnect
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: never #이원석 수정
 
 volumes:
   pgdata:
