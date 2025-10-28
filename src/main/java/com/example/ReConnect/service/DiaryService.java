@@ -6,7 +6,6 @@ import com.example.ReConnect.entity.Diary;
 import com.example.ReConnect.repository.DiaryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 
 @Service
 public class DiaryService {

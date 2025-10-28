@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -105,4 +107,5 @@ public class UserService {
     private boolean isArgon2Hash(String s) {
         return s != null && s.startsWith("$argon2");
     }
+
 }

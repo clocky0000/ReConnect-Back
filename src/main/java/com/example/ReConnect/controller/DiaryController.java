@@ -4,7 +4,6 @@ import com.example.ReConnect.dto.DiaryRequestDto;
 import com.example.ReConnect.service.DiaryService;
 import com.example.ReConnect.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +54,24 @@ public class DiaryController {
         }
 
         return ResponseEntity.ok(myDiary);
+    }
+
+    // 세션 없이 파트너 일기 불러오기
+    @GetMapping("/partner/{userId}/{coupleCode}/{questionNumber}")
+    public ResponseEntity<?> getPartnerDiary(@PathVariable String userId,
+                                             @PathVariable String coupleCode, @PathVariable Integer questionNumber) {
+        // userId로 partnerId 조회
+        String partnerId = userService.findById(userId).getPartnerId();
+        if (partnerId == null) {
+            return ResponseEntity.badRequest().body("연인을 먼저 지정해주세요");
+        }
+
+        DiaryRequestDto partnerDiary = diaryService.getPartnerDiary(partnerId, coupleCode, questionNumber);
+        if (partnerDiary == null) {
+            return ResponseEntity.badRequest().body("상대방이 일기를 작성하지 않았습니다.");
+        }
+
+        return ResponseEntity.ok(partnerDiary);
     }
 
     @GetMapping("/partner/{questionNumber}")

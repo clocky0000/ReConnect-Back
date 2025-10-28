@@ -204,7 +204,7 @@ async function loadPartnerDiary(questionNumber) {
       return;
     }
 
-    const partnerDiaryRes = await fetch(`/api/diary/partner/${questionNumber}`, { credentials: 'include' });
+    const partnerDiaryRes = await fetch(`/api/diary/partner/${loggedInUserId}/${coupleCode}/${questionNumber}`, { credentials: 'include' });
     if (partnerDiaryRes.ok) {
       const diary = await partnerDiaryRes.json();
       document.getElementById('partnerDiaryResult').innerText =
