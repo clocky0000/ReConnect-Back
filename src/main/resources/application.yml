@@ -12,6 +12,9 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
 
+fastapi:
+  base-url: ${FASTAPI_BASE_URL:http://127.0.0.1:8000}  # 이부분이 주소들어가면돼용
+
 management:
   endpoints:
     web:

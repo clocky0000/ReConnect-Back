@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
 
 import java.time.LocalDate;
 
@@ -103,9 +106,44 @@ public class DiaryController {
         return diaryService.getLastCompletedQuestion(coupleCode);
     }
 
+    @GetMapping("/last-completed-check/{coupleCode}")  //확인하고 보내는거
+    public ResponseEntity<?> getLastCompletedAndMaybeNotify(
+            @PathVariable String coupleCode,
+            @RequestParam(required = false) String userId, // 없으면 세션에서
+            HttpSession session
+    ) {
+        if (userId == null || userId.isBlank()) {
+            Object loginId = session.getAttribute("loginId");
+            if (loginId != null) userId = String.valueOf(loginId);
+        }
+
+        int last = diaryService.getLastCompletedQuestion(coupleCode);
+        boolean notified = false;
+        try {
+            notified = diaryService.notifyCompleteIf36(userId, coupleCode);
+        } catch (Exception e) {
+            System.err.println("[DiaryController] notifyCompleteIf36 error: " + e.getMessage());
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "lastCompleted", last,
+                "notified", notified
+        ));
+    }
+
     // 다음 질문 번호 (최대 36)
     @GetMapping("/next/{coupleCode}")
     public int getNextQuestion(@PathVariable String coupleCode) {
         return diaryService.getNextQuestionNumber(coupleCode);
     }
+
+    @GetMapping("/test-send")   // 수동으로 확인
+    public ResponseEntity<String> testSend(
+            @RequestParam String userId,
+            @RequestParam String coupleCode
+    ) {
+        boolean ok = diaryService.notifyCompleteIf36(userId, coupleCode);
+        return ResponseEntity.ok(ok ? "전송 성공" : "전송 실패");
+    }
+
 }

@@ -6,16 +6,19 @@ import com.example.ReConnect.entity.Diary;
 import com.example.ReConnect.repository.DiaryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
+import com.example.ReConnect.client.FastApiClient;
 
 @Service
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserService userService;
+    private final FastApiClient fastApiClient;
 
-    public DiaryService(DiaryRepository diaryRepository, UserService userService) {
+    public DiaryService(DiaryRepository diaryRepository, UserService userService, FastApiClient fastApiClient) {
         this.diaryRepository = diaryRepository;
         this.userService = userService;
+        this.fastApiClient = fastApiClient;
     }
 
     public void submitDiary(DiaryRequestDto dto, String userId, String coupleCode, Integer questionNumber) {
@@ -50,12 +53,16 @@ public class DiaryService {
             }
         }
 
+
         Diary diary = new Diary();
         diary.setUserId(userId);
         diary.setCoupleCode(coupleCode);
         diary.setQuestionNumber(questionNumber);
         diary.setContent(dto.getContent());
         diaryRepository.save(diary);
+
+        notifyCompleteIf36(userId, coupleCode);  // 36문항까지 하면 json 보내는거
+
     }
 
     public int getLastCompletedQuestion(String coupleCode) {
@@ -85,6 +92,16 @@ public class DiaryService {
     public Diary getDiaryEntity(String userId, String coupleCode, Integer questionNumber) {
         return diaryRepository.findByUserIdAndCoupleCodeAndQuestionNumber(userId, coupleCode, questionNumber)
                 .orElseThrow(() -> new RuntimeException("해당 일기를 찾을 수 없습니다."));
+    }
+
+    public boolean notifyCompleteIf36(String userId, String coupleCode) {
+        int last = getLastCompletedQuestion(coupleCode);
+        if (last >= 36 && userId != null && !userId.isBlank()) {
+            System.out.println("[DEBUG] 조건 만족 → FastAPI 호출");
+            return fastApiClient.notifyComplete(userId, coupleCode);
+        }
+        System.out.println("[DEBUG] 조건 미충족: last=" + last + ", userId=" + userId);
+        return false;
     }
 
     public DiaryRequestDto getPartnerDiary(String partnerId, String coupleCode, Integer questionNumber) {
